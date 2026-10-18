@@ -273,17 +273,55 @@ function renderCart() {
   });
 }
 
+// In-app browser Back behavior: keep Back inside the storefront when a UI panel is open.
+function pushKailuUiHistory(uiName) {
+  const currentState = history.state && typeof history.state === "object" ? history.state : {};
+  history.pushState(
+    { ...currentState, kailuUI: uiName, kailuUiToken: Date.now() + Math.random() },
+    "",
+    window.location.href
+  );
+}
+
+function replaceKailuUiHistory(uiName) {
+  const currentState = history.state && typeof history.state === "object" ? { ...history.state } : {};
+  if (uiName) {
+    currentState.kailuUI = uiName;
+    currentState.kailuUiToken = Date.now();
+  } else {
+    delete currentState.kailuUI;
+    delete currentState.kailuUiToken;
+  }
+  const nextUrl = `${window.location.pathname}${window.location.search}#products`;
+  history.replaceState(currentState, "", nextUrl);
+}
+
+function scrollToCatalogList() {
+  const catalogSection = $("#products");
+  replaceKailuUiHistory(null);
+  if (catalogSection) {
+    catalogSection.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+}
+
 function openCart() {
+  const wasHidden = cartDrawer.hidden;
   cartDrawer.hidden = false;
   overlay.hidden = false;
   document.body.style.overflow = "hidden";
+  if (wasHidden) pushKailuUiHistory("cart");
   $("#closeCart").focus();
 }
-function closeCart() {
+function closeCart(options = {}) {
+  const wasOpen = !cartDrawer.hidden;
   cartDrawer.hidden = true;
   overlay.hidden = true;
   document.body.style.overflow = "";
-  $("#cartShortcut").focus();
+  if (!options.skipHistory && !options.fromPopstate && wasOpen &&
+      history.state && history.state.kailuUI === "cart") {
+    history.back();
+  }
+  if (!options.fromPopstate) $("#cartShortcut").focus();
 }
 function showToast(message) {
   toast.textContent = message;
@@ -383,6 +421,7 @@ async function sendWhatsAppOrder() {
     $("#products").scrollIntoView({ behavior: "smooth", block: "start" });
     const successModal = $("#orderSuccessModal");
     if (successModal) {
+      replaceKailuUiHistory("success");
       successModal.hidden = false;
       document.body.classList.add("success-modal-open");
       const continueButton = $("#continueShoppingSuccess");
@@ -407,14 +446,8 @@ function returnToCatalogList() {
   const successModal = $("#orderSuccessModal");
   if (successModal) successModal.hidden = true;
   document.body.classList.remove("success-modal-open");
-  closeCart();
-
-  const catalogSection = $("#products");
-  if (catalogSection) {
-    // Move the page to the catalog list after dismissing the success message.
-    window.location.hash = "products";
-    catalogSection.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
+  closeCart({ skipHistory: true });
+  scrollToCatalogList();
 }
 if (continueShoppingSuccess) {
   continueShoppingSuccess.addEventListener("click", returnToCatalogList);
@@ -439,6 +472,7 @@ function openPhotoLightbox(card, clickedSrc) {
   img.src = lightboxPhotos[lightboxIndex] || clickedSrc;
   $("#photoLightbox").hidden = false;
   document.body.classList.add("photo-viewer-open");
+  pushKailuUiHistory("photo");
 }
 
 function moveLightboxPhoto(delta) {
@@ -498,23 +532,23 @@ productGrid.addEventListener("click", event => {
     buyNow(Number(buyButton.dataset.buy));
   }
 });
-$("#closePhotoLightbox").addEventListener("click", () => {
-  $("#photoLightbox").hidden = true;
+function closePhotoLightbox(options = {}) {
+  const photoLightbox = $("#photoLightbox");
+  const wasOpen = photoLightbox && !photoLightbox.hidden;
+  if (photoLightbox) photoLightbox.hidden = true;
   document.body.classList.remove("photo-viewer-open");
-});
-$("#photoLightbox").addEventListener("click", event => {
-  if (event.target.id === "photoLightbox") {
-    $("#photoLightbox").hidden = true;
-    document.body.classList.remove("photo-viewer-open");
+  if (wasOpen && !options.fromPopstate && history.state && history.state.kailuUI === "photo") {
+    history.back();
   }
+}
+$("#closePhotoLightbox").addEventListener("click", () => closePhotoLightbox());
+$("#photoLightbox").addEventListener("click", event => {
+  if (event.target.id === "photoLightbox") closePhotoLightbox();
 });
 $("#photoLightboxPrev").addEventListener("click", () => moveLightboxPhoto(-1));
 $("#photoLightboxNext").addEventListener("click", () => moveLightboxPhoto(1));
 document.addEventListener("keydown", event => {
-  if (event.key === "Escape" && !$("#photoLightbox").hidden) {
-    $("#photoLightbox").hidden = true;
-    document.body.classList.remove("photo-viewer-open");
-  }
+  if (event.key === "Escape" && !$("#photoLightbox").hidden) closePhotoLightbox();
   if (!$("#photoLightbox").hidden && event.key === "ArrowRight") moveLightboxPhoto(1);
   if (!$("#photoLightbox").hidden && event.key === "ArrowLeft") moveLightboxPhoto(-1);
 });
@@ -586,6 +620,29 @@ overlay.addEventListener("click", closeCart);
 $("#whatsappOrder").addEventListener("click", sendWhatsAppOrder);
 document.addEventListener("keydown", event => {
   if (event.key === "Escape" && !cartDrawer.hidden) closeCart();
+});
+
+// Android/mobile browser Back: close the active UI and return to catalog instead of exiting.
+window.addEventListener("popstate", () => {
+  const photoLightbox = $("#photoLightbox");
+  if (photoLightbox && !photoLightbox.hidden) {
+    closePhotoLightbox({ fromPopstate: true });
+    return;
+  }
+
+  const successModal = $("#orderSuccessModal");
+  if (successModal && !successModal.hidden) {
+    successModal.hidden = true;
+    document.body.classList.remove("success-modal-open");
+    closeCart({ skipHistory: true, fromPopstate: true });
+    scrollToCatalogList();
+    return;
+  }
+
+  if (!cartDrawer.hidden) {
+    closeCart({ skipHistory: true, fromPopstate: true });
+    scrollToCatalogList();
+  }
 });
 
 renderCategories();

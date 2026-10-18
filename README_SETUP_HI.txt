@@ -114,3 +114,10 @@ CATALOG DISCOUNT PRICE DISPLAY
 - Each catalog shows selling price ₹299, MRP ₹1,499 with strikethrough, and an 80% OFF badge.
 - Discount labels are display-only. Cart/order prices remain the actual selling price configured as ₹299.
 - Current MRP is set to ₹1,499 for all three catalog items. Update the `mrp` property in `script.js` if the actual MRP changes.
+
+
+MOBILE BROWSER BACK BUTTON
+- Opening the cart/order drawer adds an in-page history entry.
+- If the customer presses Android/mobile browser Back while the cart or delivery form is open, the drawer closes and the Shop Catalogs section appears instead of leaving the website.
+- If a fullscreen product photo is open, Back closes the photo first.
+- If the Order Success message is open, Back closes the message and returns to the catalog.
