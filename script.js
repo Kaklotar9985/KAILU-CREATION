@@ -3,7 +3,7 @@
 // digits only. Example India: "919876543210" (no +, spaces, or hyphens).
 
 const WHATSAPP_NUMBER = "918160621151"; // Optional WhatsApp fallback
-const GOOGLE_SCRIPT_URL = "PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HEREhttps://script.google.com/macros/s/AKfycbwD97xQD3dIEExZ02b3H6Nb5m1CIs6KyHI9EOL5jQTJgkK_RB17ym81WYpyeGWowrD9YQ/exec";
+const GOOGLE_SCRIPT_URL = "PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE";
 const CURRENCY = "INR";
 
 const products = [
@@ -422,27 +422,26 @@ async function sendWhatsAppOrder() {
 const continueShoppingButton = $("#continueShopping");
 if (continueShoppingButton) {
   continueShoppingButton.addEventListener("click", () => {
-    const successModal = $("#orderSuccessModal");
-    if (successModal) successModal.hidden = true;
+    $("#orderSuccessModal").hidden = true;
     document.body.classList.remove("success-modal-open");
-
-    // Return the customer directly to the catalog cards, not just the hero/header.
     const catalogSection = $("#products");
-    const catalogGrid = $("#productGrid");
     if (catalogSection) {
       catalogSection.scrollIntoView({behavior:"smooth", block:"start"});
     }
-    // A second scroll ensures the product cards are in view on mobile and desktop.
-    window.setTimeout(() => {
-      if (catalogGrid) catalogGrid.scrollIntoView({behavior:"smooth", block:"start"});
-    }, 180);
+    // Ensure the catalog list is visible after closing the success dialog.
+    window.location.hash = "products";
   });
 }
 document.addEventListener("keydown", event => {
   if (event.key === "Escape" && !$("#orderSuccessModal").hidden) {
     $("#orderSuccessModal").hidden = true;
     document.body.classList.remove("success-modal-open");
-    $("#products").scrollIntoView({behavior:"smooth", block:"start"});
+    const catalogSection = $("#products");
+    if (catalogSection) {
+      catalogSection.scrollIntoView({behavior:"smooth", block:"start"});
+    }
+    // Ensure the catalog list is visible after closing the success dialog.
+    window.location.hash = "products";
   }
 });
 
