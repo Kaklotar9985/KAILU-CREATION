@@ -23,7 +23,7 @@
       <div class="hero-copy">
         <span class="eyebrow">KAILU CREATION • ETHNIC COLLECTION</span>
         <h1>आपकी खूबसूरती,<br><em>हमारे कलेक्शन के साथ।</em></h1>
-        <p>खूबसूरत एथनिक सूट कलेक्शन। हर कैटलॉग सिर्फ ₹299 में। अपना पसंदीदा डिज़ाइन चुनें और ऑर्डर करें।</p>
+        <p>खूबसूरत एथनिक सूट कलेक्शन। हर कैटलॉग सिर्फ ₹299 में। अपना पसंदीदा डिज़ाइन चुनें और WhatsApp पर ऑर्डर करें।</p>
         <a href="#products" class="primary-link">Shop Catalogs <span>↓</span></a>
       </div>
       <div class="hero-art" aria-hidden="true">
@@ -89,7 +89,9 @@
         <button type="button" class="size-button" data-size="XXL" aria-pressed="false">XXL</button>
         <button type="button" class="size-button" data-size="3XL" aria-pressed="false">3XL</button>
       </div>
-      <small class="size-hint">Select one size before placing your order.</small>
+      <small class="size-hint">Select one size before continuing.</small>
+      <button id="continueToDetails" class="whatsapp-button continue-details" type="button">Continue to Place Order</button>
+      <div id="deliveryFields" hidden>
       <div class="checkout-heading">Delivery details</div>
       <label class="field-label" for="customerName">Full name <span class="required-mark">*</span></label>
       <input id="customerName" class="customer-input" type="text" placeholder="Enter your full name" autocomplete="name" required>
@@ -103,11 +105,18 @@
       <input id="city" class="customer-input" type="text" placeholder="Enter city" autocomplete="address-level2" required>
       <label class="field-label" for="state">State <span class="required-mark">*</span></label>
       <input id="state" class="customer-input" type="text" placeholder="Enter state" autocomplete="address-level1" required>
-      <button id="whatsappOrder" class="whatsapp-button"><span>◉</span> Place Order </button>
-      <small class="privacy-note">Your order details will open in WhatsApp. Please check the message and tap <strong>Send</strong> in WhatsApp to place your order.</small>
+      <button id="whatsappOrder" class="whatsapp-button"><span>◉</span> Place Order (Save & Email)</button>
+      <small class="privacy-note">Your order details will be submitted to the configured order system.</small>
+      </div>
       </div>
     </div>
   </aside>
+  <div id="photoLightbox" class="photo-lightbox" hidden role="dialog" aria-modal="true" aria-label="Full screen catalog photo">
+    <button id="closePhotoLightbox" class="photo-lightbox-close" type="button" aria-label="Close full screen photo">×</button>
+    <button id="photoLightboxPrev" class="photo-lightbox-nav photo-lightbox-prev" type="button" aria-label="Previous photo">‹</button>
+    <img id="photoLightboxImage" src="" alt="Catalog full screen photo">
+    <button id="photoLightboxNext" class="photo-lightbox-nav photo-lightbox-next" type="button" aria-label="Next photo">›</button>
+  </div>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <script src="script.js"></script>
 </body>

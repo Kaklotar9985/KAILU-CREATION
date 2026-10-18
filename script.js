@@ -3,7 +3,7 @@
 // digits only. Example India: "919876543210" (no +, spaces, or hyphens).
 
 const WHATSAPP_NUMBER = "918160621151"; // Optional WhatsApp fallback
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwD97xQD3dIEExZ02b3H6Nb5m1CIs6KyHI9EOL5jQTJgkK_RB17ym81WYpyeGWowrD9YQ/exec";
+const GOOGLE_SCRIPT_URL = "PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE";
 const CURRENCY = "INR";
 
 const products = [
@@ -146,7 +146,9 @@ function addToCart(id) {
   }
   cart[id] = (cart[id] || 0) + 1;
   renderCart();
-  showToast(`${product.name} added to your cart. Click Cart to review quantities.`);
+  openCart();
+  startSizeStep();
+  showToast(`${product.name} added to your cart. Select a clothing size.`);
 }
 
 function buyNow(id) {
@@ -154,12 +156,72 @@ function buyNow(id) {
   cart = { [id]: 1 };
   renderCart();
   openCart();
+  startSizeStep();
+  showToast("Select a clothing size first.");
+}
+
+function startSizeStep() {
   const checkoutFields = $("#checkoutFields");
-  if (checkoutFields) checkoutFields.hidden = false;
+  const deliveryFields = $("#deliveryFields");
   const proceedButton = $("#proceedCheckout");
+  if (checkoutFields) {
+    checkoutFields.hidden = false;
+    checkoutFields.dataset.opened = "true";
+  }
+  if (deliveryFields) deliveryFields.hidden = true;
   if (proceedButton) proceedButton.hidden = true;
-  showToast("Enter your name and address to continue");
-  setTimeout(() => $("#customerName").focus(), 100);
+  clearValidationHighlights();
+  const sizeSection = $("#sizeOptions");
+  if (sizeSection) sizeSection.scrollIntoView({behavior:"smooth", block:"center"});
+}
+
+function clearValidationHighlights() {
+  document.querySelectorAll(".field-invalid, .size-invalid").forEach(el => el.classList.remove("field-invalid", "size-invalid"));
+}
+
+function highlightMissingFields() {
+  clearValidationHighlights();
+  const missing = [];
+  if (!$("#productSize").value) {
+    $("#closePhotoLightbox").addEventListener("click", () => {
+  $("#photoLightbox").hidden = true;
+  document.body.classList.remove("photo-viewer-open");
+});
+$("#photoLightbox").addEventListener("click", event => {
+  if (event.target.id === "photoLightbox") {
+    $("#photoLightbox").hidden = true;
+    document.body.classList.remove("photo-viewer-open");
+  }
+});
+$("#photoLightboxPrev").addEventListener("click", () => moveLightboxPhoto(-1));
+$("#photoLightboxNext").addEventListener("click", () => moveLightboxPhoto(1));
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape" && !$("#photoLightbox").hidden) {
+    $("#photoLightbox").hidden = true;
+    document.body.classList.remove("photo-viewer-open");
+  }
+  if (!$("#photoLightbox").hidden && event.key === "ArrowRight") moveLightboxPhoto(1);
+  if (!$("#photoLightbox").hidden && event.key === "ArrowLeft") moveLightboxPhoto(-1);
+});
+
+const sizeOptions = $("#sizeOptions");
+    if (sizeOptions) sizeOptions.classList.add("size-invalid");
+    missing.push(sizeOptions);
+  }
+  ["customerName", "houseBuilding", "roadArea", "pincode", "city", "state"].forEach(id => {
+    const field = $("#" + id);
+    if (field && !field.value.trim()) {
+      field.classList.add("field-invalid");
+      missing.push(field);
+    }
+  });
+  if ($("#pincode").value.trim() && !/^[0-9]{6}$/.test($("#pincode").value.trim())) {
+    $("#pincode").classList.add("field-invalid");
+    missing.push($("#pincode"));
+  }
+  const first = missing.find(Boolean);
+  if (first) first.scrollIntoView({behavior:"smooth", block:"center"});
+  return missing;
 }
 
 function changeQuantity(id, delta) {
@@ -244,6 +306,13 @@ function showToast(message) {
 }
 
 async function sendWhatsAppOrder() {
+  const deliveryFields = $("#deliveryFields");
+  if (deliveryFields) deliveryFields.hidden = false;
+  const missingFields = highlightMissingFields();
+  if (missingFields.length) {
+    showToast("Please complete the highlighted fields.");
+    return;
+  }
   const entries = getCartEntries();
   if (!entries.length) {
     showToast("Please add a product first");
@@ -341,7 +410,33 @@ async function sendWhatsAppOrder() {
   }, 3500);
 }
 
+let lightboxPhotos = [];
+let lightboxIndex = 0;
+
+function openPhotoLightbox(card, clickedSrc) {
+  const img = $("#photoLightboxImage");
+  lightboxPhotos = [...card.querySelectorAll(".gallery-thumb")]
+    .map(button => button.dataset.src)
+    .filter(Boolean);
+  if (!lightboxPhotos.length) lightboxPhotos = [clickedSrc];
+  lightboxIndex = Math.max(0, lightboxPhotos.indexOf(clickedSrc));
+  img.src = lightboxPhotos[lightboxIndex] || clickedSrc;
+  $("#photoLightbox").hidden = false;
+  document.body.classList.add("photo-viewer-open");
+}
+
+function moveLightboxPhoto(delta) {
+  if (!lightboxPhotos.length) return;
+  lightboxIndex = (lightboxIndex + delta + lightboxPhotos.length) % lightboxPhotos.length;
+  $("#photoLightboxImage").src = lightboxPhotos[lightboxIndex];
+}
+
 productGrid.addEventListener("click", event => {
+  const clickedPhoto = event.target.closest(".catalog-photo");
+  if (clickedPhoto) {
+    openPhotoLightbox(clickedPhoto.closest(".product-card"), clickedPhoto.src);
+    return;
+  }
   const photoButton = event.target.closest("[data-gallery-photo]");
   const nextButton = event.target.closest("[data-gallery-next]");
   const videoButton = event.target.closest("[data-video-toggle]");
@@ -387,17 +482,60 @@ productGrid.addEventListener("click", event => {
     buyNow(Number(buyButton.dataset.buy));
   }
 });
+$("#closePhotoLightbox").addEventListener("click", () => {
+  $("#photoLightbox").hidden = true;
+  document.body.classList.remove("photo-viewer-open");
+});
+$("#photoLightbox").addEventListener("click", event => {
+  if (event.target.id === "photoLightbox") {
+    $("#photoLightbox").hidden = true;
+    document.body.classList.remove("photo-viewer-open");
+  }
+});
+$("#photoLightboxPrev").addEventListener("click", () => moveLightboxPhoto(-1));
+$("#photoLightboxNext").addEventListener("click", () => moveLightboxPhoto(1));
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape" && !$("#photoLightbox").hidden) {
+    $("#photoLightbox").hidden = true;
+    document.body.classList.remove("photo-viewer-open");
+  }
+  if (!$("#photoLightbox").hidden && event.key === "ArrowRight") moveLightboxPhoto(1);
+  if (!$("#photoLightbox").hidden && event.key === "ArrowLeft") moveLightboxPhoto(-1);
+});
+
+document.querySelectorAll(".customer-input").forEach(field => {
+  field.addEventListener("input", () => field.classList.remove("field-invalid"));
+});
 const sizeOptions = $("#sizeOptions");
 if (sizeOptions) {
   sizeOptions.addEventListener("click", event => {
     const button = event.target.closest("[data-size]");
     if (!button) return;
     $("#productSize").value = button.dataset.size;
+    $("#sizeOptions").classList.remove("size-invalid");
     document.querySelectorAll("#sizeOptions .size-button").forEach(option => {
       const selected = option === button;
       option.classList.toggle("selected", selected);
       option.setAttribute("aria-pressed", String(selected));
     });
+  });
+}
+
+const continueToDetails = $("#continueToDetails");
+if (continueToDetails) {
+  continueToDetails.addEventListener("click", () => {
+    clearValidationHighlights();
+    if (!$("#productSize").value) {
+      $("#sizeOptions").classList.add("size-invalid");
+      $("#sizeOptions").scrollIntoView({behavior:"smooth", block:"center"});
+      showToast("Please select a clothing size first.");
+      return;
+    }
+    $("#sizeOptions").classList.remove("size-invalid");
+    $("#deliveryFields").hidden = false;
+    $("#deliveryFields").scrollIntoView({behavior:"smooth", block:"start"});
+    const firstField = $("#customerName");
+    if (firstField) firstField.focus({preventScroll:true});
   });
 }
 

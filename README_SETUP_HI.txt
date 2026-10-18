@@ -82,3 +82,10 @@ CART BEHAVIOR UPDATE
 - Click the Cart button at the top to see each product, its own quantity +/− controls, remove button, and updated subtotal.
 - Click "Proceed to Order / Checkout" to open size and delivery address fields.
 - Buy Now still opens checkout directly for that product.
+
+
+LATEST UPDATE
+- Click any main catalog photo to open it in fullscreen on mobile and PC. Use arrows to move through that catalog's photos; Escape or X closes on PC/mobile.
+- Add to Cart and Buy Now open the cart at the Clothing Size step first.
+- Select a size, then click Continue to Place Order to reveal delivery fields.
+- Clicking Place Order highlights missing/invalid fields in red and scrolls to the first incomplete field. Fields stop being highlighted when corrected.
