@@ -144,11 +144,10 @@ function addToCart(id) {
     showToast("This catalog could not be added. Please refresh the page.");
     return;
   }
+  // Add to cart only: keep the customer on the catalog page.
   cart[id] = (cart[id] || 0) + 1;
   renderCart();
-  openCart();
-  startSizeStep();
-  showToast(`${product.name} added to your cart. Select a clothing size.`);
+  showToast(`${product.name} added to your cart.`);
 }
 
 function buyNow(id) {

@@ -95,3 +95,9 @@ Continue Shopping fix:
 - The empty-cart button and order-success modal now have unique IDs.
 - Clicking "Continue Shopping" in the success modal closes the message and navigates to #products.
 - JavaScript syntax was checked and duplicate HTML IDs were removed.
+
+
+ADD TO CART BEHAVIOR
+- "Add to cart" adds one quantity and stays on the Catalog List; it no longer opens the cart/order window automatically.
+- The customer can click the Cart button in the header to review items, adjust each product quantity, then proceed to size selection and checkout.
+- "Buy Now" still opens checkout directly for that catalog.
