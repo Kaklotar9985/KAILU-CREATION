@@ -8,27 +8,61 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div class="announcement-bar">
+    <span class="announcement-mark">✦</span> YOUR STYLE, OUR CREATION
+    <span class="announcement-divider" aria-hidden="true"></span>
+    <span>PREMIUM PACKAGING · THOUGHTFUL DETAILS</span>
+    <a href="#products">EXPLORE THE EDIT <span aria-hidden="true">↗</span></a>
+  </div>
   <header class="site-header">
-    <a class="brand" href="#" aria-label="KAILU CREATION Home">
-      <span class="brand-mark">K</span>
-      <span><strong>KAILU CREATION</strong><small>Ethnic Wear • Beautiful Looks</small></span>
+    <a class="brand" href="#home" aria-label="KAILU CREATION Home">
+      <img class="brand-logo" src="images/kailu-logo.png" alt="KAILU CREATION logo">
+      <span class="brand-tagline"><strong>KAILU CREATION</strong><small>Your Style, Our Creation</small></span>
     </a>
+    <nav class="main-nav" aria-label="Main navigation">
+      <a class="nav-link active" href="#home">Home</a>
+      <a class="nav-link" href="#products">Shop Catalogs</a>
+      <a class="nav-link" href="#why-kailu">Why KAILU</a>
+    </nav>
     <button id="cartShortcut" class="cart-shortcut" type="button" aria-label="Open cart">
-      🛒 Cart <span id="cartCount" class="count">0</span>
+      <span class="cart-icon" aria-hidden="true">🛍</span> Cart <span id="cartCount" class="count">0</span>
     </button>
   </header>
 
-  <main>
+  <main id="home">
     <section class="hero">
       <div class="hero-copy">
-        <span class="eyebrow">KAILU CREATION • ETHNIC COLLECTION</span>
-        <h1>आपकी खूबसूरती,<br><em>हमारे कलेक्शन के साथ।</em></h1>
-        <p>खूबसूरत एथनिक सूट कलेक्शन। हर कैटलॉग सिर्फ ₹299 में। अपना पसंदीदा डिज़ाइन चुनें और WhatsApp पर ऑर्डर करें।</p>
-        <a href="#products" class="primary-link">Shop Catalogs <span>↓</span></a>
+        <span class="eyebrow"><span class="eyebrow-line"></span> THE KAILU EXPERIENCE · ETHNIC WEAR</span>
+        <h1>Your Style,<br><em>Our Creation.</em></h1>
+        <p>खूबसूरत एथनिक कलेक्शन, सोच-समझकर तैयार की गई पैकेजिंग और हर ऑर्डर में खास एहसास। अपनी पसंद चुनें और ऑर्डर करें।</p>
+        <div class="hero-actions">
+          <a href="#products" class="primary-link">Discover the Collection <span>↗</span></a>
+          <span class="hero-price"><strong>₹299</strong><small>per catalog</small></span>
+        </div>
+        <div class="hero-promise"><span>✦</span> A little tradition. A lot of you.</div>
       </div>
-      <div class="hero-art" aria-hidden="true">
-        <div class="sun"></div><div class="art-card card-one">✦<small>GOOD<br>CHOICES</small></div>
-        <div class="art-card card-two">🛍️</div><div class="art-circle">SMALL<br>THINGS<br><b>BIG JOY</b></div>
+      <div class="hero-art" aria-label="Featured KAILU CREATION ethnic collection">
+        <div class="hero-photo photo-back">
+          <img src="images/catalog-2-1.jpg" alt="Mustard floral ethnic suit" loading="eager">
+          <span class="photo-caption">TIMELESS ELEGANCE</span>
+        </div>
+        <div class="hero-photo photo-main">
+          <img src="images/catalog-1-1.png" alt="Blue floral ethnic suit" loading="eager">
+          <span class="season-label">THE NEW EDIT <b>✦</b></span>
+        </div>
+        <div class="hero-photo photo-front">
+          <img src="images/catalog-3.jpg" alt="Sage green ethnic suit" loading="eager">
+          <span class="front-label">Made to feel beautiful</span>
+        </div>
+        <div class="floating-price"><span class="price-sparkle">✳</span><span><small>YOUR NEXT FAVOURITE</small><strong>From ₹299</strong></span></div>
+        <div class="brand-packaging-card" aria-label="KAILU CREATION branded gift bag">
+          <img src="images/kailu-gift-bag.png" alt="KAILU CREATION luxury branded gift bag" loading="eager">
+          <span>THE KAILU EXPERIENCE</span>
+        </div>
+        <div class="hang-tag-card" aria-label="KAILU CREATION branded clothing tags">
+          <img src="images/kailu-hang-tags.png" alt="KAILU CREATION premium clothing hang tags" loading="eager">
+        </div>
+        <div class="hero-orbit orbit-one"></div><div class="hero-orbit orbit-two"></div>
       </div>
     </section>
 
@@ -55,7 +89,7 @@
       </div>
     </section>
 
-    <section class="trust-strip">
+    <section class="trust-strip" id="why-kailu">
       <div><span>✓</span><p><strong>Easy WhatsApp Order</strong><small>Order in a few clicks</small></p></div>
       <div><span>♡</span><p><strong>Direct Contact</strong><small>Chat with us to order</small></p></div>
       <div><span>↗</span><p><strong>Price you will love</strong><small>Each catalog only ₹299</small></p></div>
@@ -63,7 +97,7 @@
   </main>
 
   <footer class="footer">
-    <div><strong>KAILU CREATION</strong><p>WhatsApp: +91 81606 21151</p></div>
+    <div><strong>KAILU CREATION</strong><p>Your Style, Our Creation</p><p>WhatsApp: +91 81606 21151</p></div>
     <small>KAILU CREATION • Catalog price ₹299 each. Delivery and availability are confirmed on WhatsApp.</small>
   </footer>
 
