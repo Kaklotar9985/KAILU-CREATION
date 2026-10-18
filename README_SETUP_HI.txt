@@ -97,7 +97,7 @@ Continue Shopping fix:
 - JavaScript syntax was checked and duplicate HTML IDs were removed.
 
 
-ADD TO CART BEHAVIOR
-- "Add to cart" adds one quantity and stays on the Catalog List; it no longer opens the cart/order window automatically.
-- The customer can click the Cart button in the header to review items, adjust each product quantity, then proceed to size selection and checkout.
-- "Buy Now" still opens checkout directly for that catalog.
+Cart button behavior update:
+- Add to Cart now adds the selected catalog to the cart data, updates the cart count/subtotal, and shows only a brief toast message. It does not open the Your Cart/order drawer.
+- Buy Now still opens the order drawer directly for the selected catalog and starts at clothing-size selection.
+- The Cart button in the page header can still be used to review cart contents and quantities.

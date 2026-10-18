@@ -3,7 +3,7 @@
 // digits only. Example India: "919876543210" (no +, spaces, or hyphens).
 
 const WHATSAPP_NUMBER = "918160621151"; // Optional WhatsApp fallback
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwD97xQD3dIEExZ02b3H6Nb5m1CIs6KyHI9EOL5jQTJgkK_RB17ym81WYpyeGWowrD9YQ/exec";
+const GOOGLE_SCRIPT_URL = "PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE";
 const CURRENCY = "INR";
 
 const products = [
@@ -144,10 +144,11 @@ function addToCart(id) {
     showToast("This catalog could not be added. Please refresh the page.");
     return;
   }
-  // Add to cart only: keep the customer on the catalog page.
   cart[id] = (cart[id] || 0) + 1;
   renderCart();
+  // Add to Cart should only show a brief confirmation; keep the catalog visible.
   showToast(`${product.name} added to your cart.`);
+
 }
 
 function buyNow(id) {
