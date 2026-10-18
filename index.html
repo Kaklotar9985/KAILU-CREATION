@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="hi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#143d32">
+  <title>KAILU CREATION</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#" aria-label="KAILU CREATION Home">
+      <span class="brand-mark">K</span>
+      <span><strong>KAILU CREATION</strong><small>Ethnic Wear • Beautiful Looks</small></span>
+    </a>
+    <button id="cartShortcut" class="cart-shortcut" type="button" aria-label="Open cart">
+      🛒 Cart <span id="cartCount" class="count">0</span>
+    </button>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <span class="eyebrow">KAILU CREATION • ETHNIC COLLECTION</span>
+        <h1>आपकी खूबसूरती,<br><em>हमारे कलेक्शन के साथ।</em></h1>
+        <p>खूबसूरत एथनिक सूट कलेक्शन। हर कैटलॉग सिर्फ ₹299 में। अपना पसंदीदा डिज़ाइन चुनें और WhatsApp पर ऑर्डर करें।</p>
+        <a href="#products" class="primary-link">Shop Catalogs <span>↓</span></a>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="sun"></div><div class="art-card card-one">✦<small>GOOD<br>CHOICES</small></div>
+        <div class="art-card card-two">🛍️</div><div class="art-circle">SMALL<br>THINGS<br><b>BIG JOY</b></div>
+      </div>
+    </section>
+
+    <section class="shop-section" id="products">
+      <div class="section-heading">
+        <div><span class="eyebrow">OUR ETHNIC COLLECTION</span><h2>Shop Catalogs</h2></div>
+        <p id="productSummary">3 beautiful catalogs • ₹299 each</p>
+      </div>
+      <div class="toolbar">
+        <label class="search-box"><span>⌕</span><input id="searchInput" type="search" placeholder="Search products..." aria-label="Search products"></label>
+        <select id="categoryFilter" aria-label="Filter category">
+          <option value="all">All categories</option>
+        </select>
+        <select id="sortSelect" aria-label="Sort products">
+          <option value="featured">Featured</option>
+          <option value="low">Price: Low to high</option>
+          <option value="high">Price: High to low</option>
+          <option value="name">Name: A to Z</option>
+        </select>
+      </div>
+      <div id="productGrid" class="product-grid" aria-live="polite"></div>
+      <div id="emptyProducts" class="empty-state" hidden>
+        <span>⌕</span><h3>No products found</h3><p>Try another search or category.</p>
+      </div>
+    </section>
+
+    <section class="trust-strip">
+      <div><span>✓</span><p><strong>Easy WhatsApp Order</strong><small>Order in a few clicks</small></p></div>
+      <div><span>♡</span><p><strong>Direct Contact</strong><small>Chat with us to order</small></p></div>
+      <div><span>↗</span><p><strong>Price you will love</strong><small>Each catalog only ₹299</small></p></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div><strong>KAILU CREATION</strong><p>WhatsApp: +91 81606 21151</p></div>
+    <small>KAILU CREATION • Catalog price ₹299 each. Delivery and availability are confirmed on WhatsApp.</small>
+  </footer>
+
+  <div id="overlay" class="overlay" hidden></div>
+  <aside id="cartDrawer" class="cart-drawer" aria-label="Shopping cart" aria-modal="true" role="dialog" hidden>
+    <div class="cart-head"><div><span class="eyebrow">YOUR SELECTION</span><h2>Your Cart <span id="drawerCount">(0)</span></h2></div><button id="closeCart" class="icon-button" aria-label="Close cart">×</button></div>
+    <div id="cartItems" class="cart-items"></div>
+    <div id="cartEmpty" class="cart-empty"><span>🛒</span><h3>Your cart is empty</h3><p>Add a few products to get started.</p><button id="continueShopping" class="secondary-button">Continue shopping</button></div>
+    <div id="cartBottom" class="cart-bottom" hidden>
+      <div class="total-row"><span>Subtotal</span><strong id="cartTotal">₹0</strong></div>
+      <p class="cart-note">Delivery charges, availability and final total will be confirmed by the store.</p>
+      <div class="cod-note"><strong>✓ Cash on Delivery (COD)</strong><span>Payment is collected when your order is delivered.</span></div>
+      <button id="proceedCheckout" class="whatsapp-button proceed-checkout" type="button" hidden>Proceed to Order / Checkout</button>
+      <div id="checkoutFields" hidden>
+      <div class="checkout-heading">Select Size</div>
+      <span class="field-label">Clothing size <span class="required-mark">*</span></span>
+      <input id="productSize" type="hidden" value="">
+      <div id="sizeOptions" class="size-options" role="group" aria-label="Choose clothing size">
+        <button type="button" class="size-button" data-size="S" aria-pressed="false">S</button>
+        <button type="button" class="size-button" data-size="M" aria-pressed="false">M</button>
+        <button type="button" class="size-button" data-size="L" aria-pressed="false">L</button>
+        <button type="button" class="size-button" data-size="XL" aria-pressed="false">XL</button>
+        <button type="button" class="size-button" data-size="XXL" aria-pressed="false">XXL</button>
+        <button type="button" class="size-button" data-size="3XL" aria-pressed="false">3XL</button>
+      </div>
+      <small class="size-hint">Select one size before placing your order.</small>
+      <div class="checkout-heading">Delivery details</div>
+      <label class="field-label" for="customerName">Full name <span class="required-mark">*</span></label>
+      <input id="customerName" class="customer-input" type="text" placeholder="Enter your full name" autocomplete="name" required>
+      <label class="field-label" for="houseBuilding">House No. / Building Name <span class="required-mark">*</span></label>
+      <input id="houseBuilding" class="customer-input" type="text" placeholder="House number or building name" autocomplete="address-line1" required>
+      <label class="field-label" for="roadArea">Road Name / Area / Colony <span class="required-mark">*</span></label>
+      <input id="roadArea" class="customer-input" type="text" placeholder="Road, area or colony" autocomplete="address-line2" required>
+      <label class="field-label" for="pincode">Pincode <span class="required-mark">*</span></label>
+      <input id="pincode" class="customer-input" type="text" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" placeholder="6-digit PIN code" autocomplete="postal-code" required>
+      <label class="field-label" for="city">City <span class="required-mark">*</span></label>
+      <input id="city" class="customer-input" type="text" placeholder="Enter city" autocomplete="address-level2" required>
+      <label class="field-label" for="state">State <span class="required-mark">*</span></label>
+      <input id="state" class="customer-input" type="text" placeholder="Enter state" autocomplete="address-level1" required>
+      <button id="whatsappOrder" class="whatsapp-button"><span>◉</span> Place Order (Save & Email)</button>
+      <small class="privacy-note">Your order details will open in WhatsApp. Please check the message and tap <strong>Send</strong> in WhatsApp to place your order.</small>
+      </div>
+    </div>
+  </aside>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="script.js"></script>
+</body>
+</html>
