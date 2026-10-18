@@ -381,7 +381,6 @@ async function sendWhatsAppOrder() {
       mode: "no-cors",
       body: payload
     });
-    showToast("Order request sent. Check your email/Google Sheet shortly.");
     submitButton.textContent = "Order Request Sent";
 
     // Return the customer to the catalog and close the cart after submission.
@@ -398,6 +397,9 @@ async function sendWhatsAppOrder() {
       if (field) field.value = "";
     });
     $("#products").scrollIntoView({ behavior: "smooth", block: "start" });
+    $("#orderSuccessModal").hidden = false;
+    document.body.classList.add("success-modal-open");
+    $("#continueShopping").focus();
   } catch (error) {
     showToast("Could not send order. Check internet and try again.");
     submitButton.innerHTML = originalText;
@@ -409,6 +411,22 @@ async function sendWhatsAppOrder() {
     submitButton.disabled = false;
   }, 3500);
 }
+
+const continueShoppingButton = $("#continueShopping");
+if (continueShoppingButton) {
+  continueShoppingButton.addEventListener("click", () => {
+    $("#orderSuccessModal").hidden = true;
+    document.body.classList.remove("success-modal-open");
+    $("#products").scrollIntoView({behavior:"smooth", block:"start"});
+  });
+}
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape" && !$("#orderSuccessModal").hidden) {
+    $("#orderSuccessModal").hidden = true;
+    document.body.classList.remove("success-modal-open");
+    $("#products").scrollIntoView({behavior:"smooth", block:"start"});
+  }
+});
 
 let lightboxPhotos = [];
 let lightboxIndex = 0;
