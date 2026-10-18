@@ -89,3 +89,9 @@ LATEST UPDATE
 - Add to Cart and Buy Now open the cart at the Clothing Size step first.
 - Select a size, then click Continue to Place Order to reveal delivery fields.
 - Clicking Place Order highlights missing/invalid fields in red and scrolls to the first incomplete field. Fields stop being highlighted when corrected.
+
+
+Continue Shopping fix:
+- The empty-cart button and order-success modal now have unique IDs.
+- Clicking "Continue Shopping" in the success modal closes the message and navigates to #products.
+- JavaScript syntax was checked and duplicate HTML IDs were removed.

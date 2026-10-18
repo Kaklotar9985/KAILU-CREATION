@@ -402,7 +402,7 @@ async function sendWhatsAppOrder() {
     if (successModal) {
       successModal.hidden = false;
       document.body.classList.add("success-modal-open");
-      const continueButton = $("#continueShopping");
+      const continueButton = $("#continueShoppingSuccess");
       if (continueButton) continueButton.focus({preventScroll:true});
     } else {
       showToast("Order request sent. Check your Google Sheet and email.");
@@ -419,19 +419,27 @@ async function sendWhatsAppOrder() {
   }, 3500);
 }
 
-const continueShoppingButton = $("#continueShopping");
-if (continueShoppingButton) {
-  continueShoppingButton.addEventListener("click", () => {
-    $("#orderSuccessModal").hidden = true;
-    document.body.classList.remove("success-modal-open");
-    $("#products").scrollIntoView({behavior:"smooth", block:"start"});
-  });
+const continueShoppingSuccess = $("#continueShoppingSuccess");
+function returnToCatalogList() {
+  const successModal = $("#orderSuccessModal");
+  if (successModal) successModal.hidden = true;
+  document.body.classList.remove("success-modal-open");
+  closeCart();
+
+  const catalogSection = $("#products");
+  if (catalogSection) {
+    // Move the page to the catalog list after dismissing the success message.
+    window.location.hash = "products";
+    catalogSection.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+}
+if (continueShoppingSuccess) {
+  continueShoppingSuccess.addEventListener("click", returnToCatalogList);
 }
 document.addEventListener("keydown", event => {
-  if (event.key === "Escape" && !$("#orderSuccessModal").hidden) {
-    $("#orderSuccessModal").hidden = true;
-    document.body.classList.remove("success-modal-open");
-    $("#products").scrollIntoView({behavior:"smooth", block:"start"});
+  const successModal = $("#orderSuccessModal");
+  if (event.key === "Escape" && successModal && !successModal.hidden) {
+    returnToCatalogList();
   }
 });
 
@@ -589,7 +597,8 @@ if (proceedCheckout) {
   });
 }
 $("#closeCart").addEventListener("click", closeCart);
-$("#continueShopping").addEventListener("click", closeCart);
+const continueShoppingEmpty = $("#continueShoppingEmpty");
+if (continueShoppingEmpty) continueShoppingEmpty.addEventListener("click", closeCart);
 overlay.addEventListener("click", closeCart);
 $("#whatsappOrder").addEventListener("click", sendWhatsAppOrder);
 document.addEventListener("keydown", event => {
