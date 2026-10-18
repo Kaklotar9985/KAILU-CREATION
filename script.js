@@ -3,7 +3,7 @@
 // digits only. Example India: "919876543210" (no +, spaces, or hyphens).
 
 const WHATSAPP_NUMBER = "918160621151"; // Optional WhatsApp fallback
-const GOOGLE_SCRIPT_URL = "PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE";
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwD97xQD3dIEExZ02b3H6Nb5m1CIs6KyHI9EOL5jQTJgkK_RB17ym81WYpyeGWowrD9YQ/exec";
 const CURRENCY = "INR";
 
 const products = [
@@ -24,6 +24,7 @@ const cartEmpty = $("#cartEmpty");
 const cartBottom = $("#cartBottom");
 const toast = $("#toast");
 let cart = {};
+const cartSizes = {};
 let toastTimer;
 
 const money = (amount) => new Intl.NumberFormat("en-IN", {
@@ -182,32 +183,6 @@ function clearValidationHighlights() {
 function highlightMissingFields() {
   clearValidationHighlights();
   const missing = [];
-  if (!$("#productSize").value) {
-    $("#closePhotoLightbox").addEventListener("click", () => {
-  $("#photoLightbox").hidden = true;
-  document.body.classList.remove("photo-viewer-open");
-});
-$("#photoLightbox").addEventListener("click", event => {
-  if (event.target.id === "photoLightbox") {
-    $("#photoLightbox").hidden = true;
-    document.body.classList.remove("photo-viewer-open");
-  }
-});
-$("#photoLightboxPrev").addEventListener("click", () => moveLightboxPhoto(-1));
-$("#photoLightboxNext").addEventListener("click", () => moveLightboxPhoto(1));
-document.addEventListener("keydown", event => {
-  if (event.key === "Escape" && !$("#photoLightbox").hidden) {
-    $("#photoLightbox").hidden = true;
-    document.body.classList.remove("photo-viewer-open");
-  }
-  if (!$("#photoLightbox").hidden && event.key === "ArrowRight") moveLightboxPhoto(1);
-  if (!$("#photoLightbox").hidden && event.key === "ArrowLeft") moveLightboxPhoto(-1);
-});
-
-const sizeOptions = $("#sizeOptions");
-    if (sizeOptions) sizeOptions.classList.add("size-invalid");
-    missing.push(sizeOptions);
-  }
   ["customerName", "houseBuilding", "roadArea", "pincode", "city", "state"].forEach(id => {
     const field = $("#" + id);
     if (field && !field.value.trim()) {
@@ -274,6 +249,10 @@ function renderCart() {
       <div class="cart-product-details">
         <h4>${escapeHtml(product.name)}</h4>
         <div class="unit-price">${money(product.price)} / item</div>
+        <div class="cart-size-picker" role="group" aria-label="Choose size for ${escapeHtml(product.name)}">
+          <span class="cart-size-label">Size:</span>
+          ${["S","M","L","XL","XXL","3XL"].map(size => `<button type="button" class="size-button cart-size-button ${cartSizes[product.id] === size ? "selected" : ""}" data-cart-size="${size}" data-product-id="${product.id}" aria-pressed="${cartSizes[product.id] === size ? "true" : "false"}">${size}</button>`).join("")}
+        </div>
         <div class="quantity-controls">
           <button type="button" data-minus="${product.id}" aria-label="Decrease ${escapeHtml(product.name)} quantity">−</button>
           <span>${quantity}</span>
@@ -318,7 +297,6 @@ async function sendWhatsAppOrder() {
     showToast("Please add a product first");
     return;
   }
-  const size = $("#productSize").value;
   const name = $("#customerName").value.trim();
   const houseBuilding = $("#houseBuilding").value.trim();
   const roadArea = $("#roadArea").value.trim();
@@ -326,7 +304,7 @@ async function sendWhatsAppOrder() {
   const city = $("#city").value.trim();
   const state = $("#state").value.trim();
   const fields = [
-    ["productSize", size], ["customerName", name], ["houseBuilding", houseBuilding],
+    ["customerName", name], ["houseBuilding", houseBuilding],
     ["roadArea", roadArea], ["pincode", pincode], ["city", city], ["state", state]
   ];
   const missing = fields.find(([, value]) => !value);
@@ -350,7 +328,7 @@ async function sendWhatsAppOrder() {
   const orderItems = entries.map(({product, quantity}) => ({
     productName: product.name,
     productId: product.id,
-    size,
+    size: cartSizes[product.id] || "",
     quantity,
     unitPrice: product.price,
     lineTotal: product.price * quantity
@@ -358,7 +336,7 @@ async function sendWhatsAppOrder() {
   const payload = new URLSearchParams({
     store: "KAILU CREATION",
     customerName: name,
-    size,
+    size: orderItems.map(item => `${item.productName}: ${item.size}`).join("; "),
     houseBuilding,
     roadArea,
     pincode,
@@ -386,6 +364,7 @@ async function sendWhatsAppOrder() {
 
     // Return the customer to the catalog and close the cart after submission.
     cart = {};
+    Object.keys(cartSizes).forEach(id => delete cartSizes[id]);
     renderCart();
     closeCart();
     $("#productSize").value = "";
@@ -558,10 +537,12 @@ const continueToDetails = $("#continueToDetails");
 if (continueToDetails) {
   continueToDetails.addEventListener("click", () => {
     clearValidationHighlights();
-    if (!$("#productSize").value) {
-      $("#sizeOptions").classList.add("size-invalid");
-      $("#sizeOptions").scrollIntoView({behavior:"smooth", block:"center"});
-      showToast("Please select a clothing size first.");
+    const entries = getCartEntries();
+    const missingSize = entries.find(({product}) => !cartSizes[product.id]);
+    if (missingSize) {
+      showToast(`Please select a size for ${missingSize.product.name} in the cart list.`);
+      const row = [...cartItems.querySelectorAll(".cart-line")].find(el => el.querySelector(`[data-product-id="${missingSize.product.id}"]`));
+      if (row) row.scrollIntoView({behavior:"smooth", block:"center"});
       return;
     }
     $("#sizeOptions").classList.remove("size-invalid");
@@ -575,6 +556,12 @@ if (continueToDetails) {
 cartItems.addEventListener("click", event => {
   const button = event.target.closest("button");
   if (!button) return;
+  if (button.dataset.cartSize && button.dataset.productId) {
+    const productId = Number(button.dataset.productId);
+    cartSizes[productId] = button.dataset.cartSize;
+    renderCart();
+    return;
+  }
   if (button.dataset.minus) changeQuantity(Number(button.dataset.minus), -1);
   if (button.dataset.plus) changeQuantity(Number(button.dataset.plus), 1);
   if (button.dataset.remove) removeFromCart(Number(button.dataset.remove));

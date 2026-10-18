@@ -278,3 +278,39 @@ body.success-modal-open { overflow:hidden !important; }
   .success-card { padding:27px 21px 22px; border-radius:16px; }
   .success-card h2 { font-size:23px; }
 }
+
+
+/* Separate clothing-size choices for each catalog in the cart */
+.cart-size-picker {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
+  margin: 9px 0;
+}
+.cart-size-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #34564b;
+  margin-right: 3px;
+}
+.cart-size-button {
+  min-width: 30px;
+  min-height: 30px;
+  padding: 5px 7px;
+  font-size: 11px;
+  border: 1px solid #d7dfd9;
+  border-radius: 7px;
+  background: #fff;
+  color: #183f34;
+  cursor: pointer;
+}
+.cart-size-button.selected {
+  background: #123f33;
+  color: #fff;
+  border-color: #123f33;
+}
+.cart-size-button:focus-visible {
+  outline: 2px solid #b47a3c;
+  outline-offset: 2px;
+}
