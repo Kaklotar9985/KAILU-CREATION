@@ -108,3 +108,8 @@ SIZE PICKER UPDATE
 - Select size separately on each product row in the cart list.
 - "Continue to Place Order" checks that every catalog line has a selected size and then reveals delivery details.
 - If a size is missing, the relevant product row is highlighted and scrolled into view.
+
+
+PRICE DISPLAY UPDATE
+- Catalog cards show the selling price (₹299), MRP ₹1,499 with a strikethrough, and an 80% OFF badge.
+- Actual product/order price remains ₹299 per catalog. Cart totals and order submissions continue to use the selling price.

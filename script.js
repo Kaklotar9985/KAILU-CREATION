@@ -86,7 +86,11 @@ function renderProducts() {
         <span class="product-category">${escapeHtml(product.category)}</span>
         <h3>${escapeHtml(product.name)}</h3>
         <p class="product-description">${escapeHtml(product.description)}</p>
-        <div class="product-buy"><span class="price">${money(product.price)} <small>/ item</small></span>
+        <div class="product-buy">
+          <div class="sale-price" aria-label="Sale price 299 rupees, MRP 1499 rupees, 80 percent off">
+            <div class="sale-price-main"><strong>${money(product.price)}</strong><span class="mrp-label">MRP <s>₹1,499</s></span></div>
+            <span class="discount-badge">80% OFF</span>
+          </div>
           <div class="product-actions">
             <button class="add-button" type="button" data-add="${product.id}">＋ Add to cart</button>
             <button class="buy-now-button" type="button" data-buy="${product.id}">Buy Now</button>
