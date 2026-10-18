@@ -101,3 +101,10 @@ Cart button behavior update:
 - Add to Cart now adds the selected catalog to the cart data, updates the cart count/subtotal, and shows only a brief toast message. It does not open the Your Cart/order drawer.
 - Buy Now still opens the order drawer directly for the selected catalog and starts at clothing-size selection.
 - The Cart button in the page header can still be used to review cart contents and quantities.
+
+
+SIZE PICKER UPDATE
+- Removed the duplicate global size selector shown below COD.
+- Select size separately on each product row in the cart list.
+- "Continue to Place Order" checks that every catalog line has a selected size and then reveals delivery details.
+- If a size is missing, the relevant product row is highlighted and scrolled into view.

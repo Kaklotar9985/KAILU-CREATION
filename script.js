@@ -3,7 +3,7 @@
 // digits only. Example India: "919876543210" (no +, spaces, or hyphens).
 
 const WHATSAPP_NUMBER = "918160621151"; // Optional WhatsApp fallback
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwD97xQD3dIEExZ02b3H6Nb5m1CIs6KyHI9EOL5jQTJgkK_RB17ym81WYpyeGWowrD9YQ/exec";
+const GOOGLE_SCRIPT_URL = "PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE";
 const CURRENCY = "INR";
 
 const products = [
@@ -172,8 +172,8 @@ function startSizeStep() {
   if (deliveryFields) deliveryFields.hidden = true;
   if (proceedButton) proceedButton.hidden = true;
   clearValidationHighlights();
-  const sizeSection = $("#sizeOptions");
-  if (sizeSection) sizeSection.scrollIntoView({behavior:"smooth", block:"center"});
+  const firstProductSize = cartItems.querySelector(".cart-size-picker");
+  if (firstProductSize) firstProductSize.scrollIntoView({behavior:"smooth", block:"center"});
 }
 
 function clearValidationHighlights() {
@@ -367,11 +367,7 @@ async function sendWhatsAppOrder() {
     Object.keys(cartSizes).forEach(id => delete cartSizes[id]);
     renderCart();
     closeCart();
-    $("#productSize").value = "";
-    document.querySelectorAll("#sizeOptions .size-button").forEach(option => {
-      option.classList.remove("selected");
-      option.setAttribute("aria-pressed", "false");
-    });
+    Object.keys(cartSizes).forEach(productId => delete cartSizes[productId]);
     ["customerName", "houseBuilding", "roadArea", "pincode", "city", "state"].forEach(id => {
       const field = $("#" + id);
       if (field) field.value = "";
@@ -518,21 +514,6 @@ document.addEventListener("keydown", event => {
 document.querySelectorAll(".customer-input").forEach(field => {
   field.addEventListener("input", () => field.classList.remove("field-invalid"));
 });
-const sizeOptions = $("#sizeOptions");
-if (sizeOptions) {
-  sizeOptions.addEventListener("click", event => {
-    const button = event.target.closest("[data-size]");
-    if (!button) return;
-    $("#productSize").value = button.dataset.size;
-    $("#sizeOptions").classList.remove("size-invalid");
-    document.querySelectorAll("#sizeOptions .size-button").forEach(option => {
-      const selected = option === button;
-      option.classList.toggle("selected", selected);
-      option.setAttribute("aria-pressed", String(selected));
-    });
-  });
-}
-
 const continueToDetails = $("#continueToDetails");
 if (continueToDetails) {
   continueToDetails.addEventListener("click", () => {
@@ -542,10 +523,15 @@ if (continueToDetails) {
     if (missingSize) {
       showToast(`Please select a size for ${missingSize.product.name} in the cart list.`);
       const row = [...cartItems.querySelectorAll(".cart-line")].find(el => el.querySelector(`[data-product-id="${missingSize.product.id}"]`));
-      if (row) row.scrollIntoView({behavior:"smooth", block:"center"});
+      const sizePicker = row && row.querySelector(".cart-size-picker");
+      if (sizePicker) {
+        sizePicker.classList.add("size-invalid");
+        sizePicker.scrollIntoView({behavior:"smooth", block:"center"});
+      } else if (row) {
+        row.scrollIntoView({behavior:"smooth", block:"center"});
+      }
       return;
     }
-    $("#sizeOptions").classList.remove("size-invalid");
     $("#deliveryFields").hidden = false;
     $("#deliveryFields").scrollIntoView({behavior:"smooth", block:"start"});
     const firstField = $("#customerName");
@@ -560,6 +546,8 @@ cartItems.addEventListener("click", event => {
     const productId = Number(button.dataset.productId);
     cartSizes[productId] = button.dataset.cartSize;
     renderCart();
+    const selectedRow = [...cartItems.querySelectorAll(".cart-line")].find(el => el.querySelector(`[data-product-id="${productId}"]`));
+    if (selectedRow) selectedRow.querySelector(".cart-size-picker")?.classList.remove("size-invalid");
     return;
   }
   if (button.dataset.minus) changeQuantity(Number(button.dataset.minus), -1);

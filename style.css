@@ -314,3 +314,11 @@ body.success-modal-open { overflow:hidden !important; }
   outline: 2px solid #b47a3c;
   outline-offset: 2px;
 }
+
+/* One size selector per catalog item; hide the removed global size window. */
+.cart-size-picker.size-invalid{
+  outline:2px solid #d92d20 !important;
+  outline-offset:4px;
+  border-radius:7px;
+  background:#fff1f0;
+}
