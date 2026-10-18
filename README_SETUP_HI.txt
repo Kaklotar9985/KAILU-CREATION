@@ -128,3 +128,9 @@ MOBILE NUMBER + LANDMARK FIELDS
 - Landmark is optional.
 - Both values are sent to Google Apps Script, stored in columns N (Mobile Number) and O (Landmark), and included in the order email.
 - After modifying Code.gs, update Apps Script deployment: Deploy > Manage deployments > Edit > New version > Deploy. Keep using the same /exec URL if updating the existing deployment.
+
+
+ORDER SUCCESS MODAL FIX
+- After the order request is sent, the cart is closed without navigating browser history. This prevents the mobile browser's popstate handler from accidentally dismissing "Order Request Submitted!".
+- The success modal stays visible until the customer clicks "Continue Shopping", presses Escape, or uses browser Back.
+- "Continue Shopping" closes the modal and scrolls to the Shop Catalogs section.

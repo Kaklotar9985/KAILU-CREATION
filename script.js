@@ -426,7 +426,7 @@ async function sendWhatsAppOrder() {
     cart = {};
     Object.keys(cartSizes).forEach(id => delete cartSizes[id]);
     renderCart();
-    closeCart();
+    closeCart({ skipHistory: true });
     Object.keys(cartSizes).forEach(productId => delete cartSizes[productId]);
     ["customerName", "mobileNumber", "houseBuilding", "landmark", "roadArea", "pincode", "city", "state"].forEach(id => {
       const field = $("#" + id);
@@ -461,7 +461,13 @@ function returnToCatalogList() {
   if (successModal) successModal.hidden = true;
   document.body.classList.remove("success-modal-open");
   closeCart({ skipHistory: true });
-  scrollToCatalogList();
+
+  // Clear the in-app UI history marker and move the actual page to Shop Catalogs.
+  const catalogSection = $("#products");
+  replaceKailuUiHistory(null);
+  if (catalogSection) {
+    window.scrollTo({ top: Math.max(0, catalogSection.getBoundingClientRect().top + window.scrollY - 12), behavior: "smooth" });
+  }
 }
 if (continueShoppingSuccess) {
   continueShoppingSuccess.addEventListener("click", returnToCatalogList);
