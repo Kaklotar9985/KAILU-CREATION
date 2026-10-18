@@ -110,6 +110,7 @@ SIZE PICKER UPDATE
 - If a size is missing, the relevant product row is highlighted and scrolled into view.
 
 
-PRICE DISPLAY UPDATE
-- Catalog cards show the selling price (₹299), MRP ₹1,499 with a strikethrough, and an 80% OFF badge.
-- Actual product/order price remains ₹299 per catalog. Cart totals and order submissions continue to use the selling price.
+CATALOG DISCOUNT PRICE DISPLAY
+- Each catalog shows selling price ₹299, MRP ₹1,499 with strikethrough, and an 80% OFF badge.
+- Discount labels are display-only. Cart/order prices remain the actual selling price configured as ₹299.
+- Current MRP is set to ₹1,499 for all three catalog items. Update the `mrp` property in `script.js` if the actual MRP changes.

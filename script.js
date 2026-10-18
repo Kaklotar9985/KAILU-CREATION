@@ -7,9 +7,9 @@ const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwD97xQD3dIEE
 const CURRENCY = "INR";
 
 const products = [
-  {id:1,name:"Royal Blue Floral Suit",category:"Ethnic Suits",price:299,image:"images/catalog-1-1.png",gallery:["images/catalog-1-2.png","images/catalog-1-3.png","images/catalog-1-4.png"],video:"videos/catalog-1.mp4",tag:"CATALOG 01",description:"Blue floral ethnic suit with a statement dupatta.",color:"#e9dfd0"},
-  {id:2,name:"Mustard Floral Suit",category:"Ethnic Suits",price:299,image:"images/catalog-2-1.jpg",gallery:["images/catalog-2-2.JPEG","images/catalog-2-3.JPEG","images/catalog-2-4.JPEG"],video:"videos/catalog-2.mp4",tag:"CATALOG 02",description:"Mustard floral suit with matching printed dupatta.",color:"#f0e4c9"},
-  {id:3,name:"Sage Green Printed Suit",category:"Ethnic Suits",price:299,image:"images/catalog-3.jpg",gallery:["images/catalog-3-2.JPEG","images/catalog-3-3.JPEG","images/catalog-3-4.JPEG"],video:"videos/catalog-3.mp4",tag:"CATALOG 03",description:"Sage green and floral printed ethnic suit set.",color:"#e4e5d8"}
+  {id:1,name:"Royal Blue Floral Suit",category:"Ethnic Suits",price:299,mrp:1499,image:"images/catalog-1-1.png",gallery:["images/catalog-1-2.png","images/catalog-1-3.png","images/catalog-1-4.png"],video:"videos/catalog-1.mp4",tag:"CATALOG 01",description:"Blue floral ethnic suit with a statement dupatta.",color:"#e9dfd0"},
+  {id:2,name:"Mustard Floral Suit",category:"Ethnic Suits",price:299,mrp:1499,image:"images/catalog-2-1.jpg",gallery:["images/catalog-2-2.JPEG","images/catalog-2-3.JPEG","images/catalog-2-4.JPEG"],video:"videos/catalog-2.mp4",tag:"CATALOG 02",description:"Mustard floral suit with matching printed dupatta.",color:"#f0e4c9"},
+  {id:3,name:"Sage Green Printed Suit",category:"Ethnic Suits",price:299,mrp:1499,image:"images/catalog-3.jpg",gallery:["images/catalog-3-2.JPEG","images/catalog-3-3.JPEG","images/catalog-3-4.JPEG"],video:"videos/catalog-3.mp4",tag:"CATALOG 03",description:"Sage green and floral printed ethnic suit set.",color:"#e4e5d8"}
 ];
 
 const $ = (selector) => document.querySelector(selector);
@@ -29,6 +29,9 @@ let toastTimer;
 
 const money = (amount) => new Intl.NumberFormat("en-IN", {
   style: "currency", currency: CURRENCY, maximumFractionDigits: 2
+}).format(amount);
+const catalogMoney = (amount) => new Intl.NumberFormat("en-IN", {
+  style: "currency", currency: CURRENCY, maximumFractionDigits: 0
 }).format(amount);
 
 function renderCategories() {
@@ -86,11 +89,12 @@ function renderProducts() {
         <span class="product-category">${escapeHtml(product.category)}</span>
         <h3>${escapeHtml(product.name)}</h3>
         <p class="product-description">${escapeHtml(product.description)}</p>
+        <div class="product-pricing" aria-label="Discounted price">
+          <span class="price">${catalogMoney(product.price)}</span>
+          <span class="mrp-label">MRP <del>${catalogMoney(product.mrp || 1499)}</del></span>
+          <span class="discount-badge">${Math.round((1 - product.price / (product.mrp || 1499)) * 100)}% OFF</span>
+        </div>
         <div class="product-buy">
-          <div class="sale-price" aria-label="Sale price 299 rupees, MRP 1499 rupees, 80 percent off">
-            <div class="sale-price-main"><strong>${money(product.price)}</strong><span class="mrp-label">MRP <s>₹1,499</s></span></div>
-            <span class="discount-badge">80% OFF</span>
-          </div>
           <div class="product-actions">
             <button class="add-button" type="button" data-add="${product.id}">＋ Add to cart</button>
             <button class="buy-now-button" type="button" data-buy="${product.id}">Buy Now</button>
