@@ -340,8 +340,9 @@ async function sendWhatsAppOrder() {
     showToast("Please enter a valid 6-digit PIN code");
     return;
   }
-  if (!GOOGLE_SCRIPT_URL.startsWith("https://script.google.com/macros/s/")) {
-    showToast("Setup needed: add your Google Script URL in script.js");
+  if (!GOOGLE_SCRIPT_URL.startsWith("https://script.google.com/macros/s/") ||
+      GOOGLE_SCRIPT_URL.includes("PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE")) {
+    showToast("Order system not connected. Add your Apps Script Web App URL in script.js.");
     return;
   }
 
@@ -397,9 +398,15 @@ async function sendWhatsAppOrder() {
       if (field) field.value = "";
     });
     $("#products").scrollIntoView({ behavior: "smooth", block: "start" });
-    $("#orderSuccessModal").hidden = false;
-    document.body.classList.add("success-modal-open");
-    $("#continueShopping").focus();
+    const successModal = $("#orderSuccessModal");
+    if (successModal) {
+      successModal.hidden = false;
+      document.body.classList.add("success-modal-open");
+      const continueButton = $("#continueShopping");
+      if (continueButton) continueButton.focus({preventScroll:true});
+    } else {
+      showToast("Order request sent. Check your Google Sheet and email.");
+    }
   } catch (error) {
     showToast("Could not send order. Check internet and try again.");
     submitButton.innerHTML = originalText;
