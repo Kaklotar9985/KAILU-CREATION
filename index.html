@@ -33,7 +33,7 @@
     <section class="hero">
       <div class="hero-copy">
         <span class="eyebrow"><span class="eyebrow-line"></span> THE KAILU EXPERIENCE · ETHNIC WEAR</span>
-        <h1>Style that feels<br><em>like you.</em></h1>
+        <h1>Your Style,<br><em>Our Creation.</em></h1>
         <p>खूबसूरत एथनिक कलेक्शन, सोच-समझकर तैयार की गई पैकेजिंग और हर ऑर्डर में खास एहसास। अपनी पसंद चुनें और ऑर्डर करें।</p>
         <div class="hero-actions">
           <a href="#products" class="primary-link">Discover the Collection <span>↗</span></a>
@@ -117,8 +117,12 @@
       <div class="checkout-heading">Delivery details</div>
       <label class="field-label" for="customerName">Full name <span class="required-mark">*</span></label>
       <input id="customerName" class="customer-input" type="text" placeholder="Enter your full name" autocomplete="name" required>
+      <label class="field-label" for="mobileNumber">Mobile Number <span class="required-mark">*</span></label>
+      <input id="mobileNumber" class="customer-input" type="tel" inputmode="numeric" pattern="[6-9][0-9]{9}" minlength="10" maxlength="10" placeholder="Enter 10-digit mobile number" autocomplete="tel-national" required>
       <label class="field-label" for="houseBuilding">House No. / Building Name <span class="required-mark">*</span></label>
       <input id="houseBuilding" class="customer-input" type="text" placeholder="House number or building name" autocomplete="address-line1" required>
+      <label class="field-label" for="landmark">Landmark</label>
+      <input id="landmark" class="customer-input" type="text" placeholder="Nearby landmark (optional)" autocomplete="off">
       <label class="field-label" for="roadArea">Road Name / Area / Colony <span class="required-mark">*</span></label>
       <input id="roadArea" class="customer-input" type="text" placeholder="Road, area or colony" autocomplete="address-line2" required>
       <label class="field-label" for="pincode">Pincode <span class="required-mark">*</span></label>

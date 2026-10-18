@@ -17,10 +17,11 @@ function doGet() {
 function doPost(e) {
   try {
     const p = (e && e.parameter) ? e.parameter : {};
-    const required = ["customerName", "size", "houseBuilding", "roadArea", "pincode", "city", "state", "total", "items"];
+    const required = ["customerName", "mobileNumber", "size", "houseBuilding", "roadArea", "pincode", "city", "state", "total", "items"];
     const missing = required.filter(k => !String(p[k] || "").trim());
     if (missing.length) return output_({ok:false, message:"Missing fields: " + missing.join(", ")});
     if (!/^\d{6}$/.test(String(p.pincode))) return output_({ok:false, message:"Invalid pincode"});
+    if (!/^[6-9]\d{9}$/.test(String(p.mobileNumber))) return output_({ok:false, message:"Invalid mobile number"});
 
     const items = JSON.parse(p.items);
     const orderId = "KC-" + Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "yyyyMMdd-HHmmss");
@@ -30,23 +31,26 @@ function doPost(e) {
     let sheet = ss.getSheetByName(SHEET_NAME);
     if (!sheet) {
       sheet = ss.insertSheet(SHEET_NAME);
-      sheet.appendRow(["Timestamp","Order ID","Customer Name","Items","Size","House No. / Building","Road / Area / Colony","Pincode","City","State","Payment Method","Total (INR)","Order Status"]);
+      sheet.appendRow(["Timestamp","Order ID","Customer Name","Items","Size","House No. / Building","Road / Area / Colony","Pincode","City","State","Payment Method","Total (INR)","Order Status","Mobile Number","Landmark"]);
       sheet.setFrozenRows(1);
     }
+    sheet.getRange(1, 14, 1, 2).setValues([["Mobile Number", "Landmark"]]);
     sheet.appendRow([
       timestamp, orderId, safeCell_(p.customerName), itemSummary, p.size,
       safeCell_(p.houseBuilding), safeCell_(p.roadArea), p.pincode,
       safeCell_(p.city), safeCell_(p.state), "Cash on Delivery (COD)",
-      Number(p.total), "New"
+      Number(p.total), "New", p.mobileNumber, safeCell_(p.landmark || "")
     ]);
 
     const body = [
       "New order received for KAILU CREATION", "",
       "Order ID: " + orderId,
       "Customer: " + p.customerName,
+      "Mobile Number: " + p.mobileNumber,
       "Items:", itemSummary, "",
       "Size: " + p.size,
       "House No. / Building Name: " + p.houseBuilding,
+      "Landmark: " + (p.landmark || "Not provided"),
       "Road Name / Area / Colony: " + p.roadArea,
       "Pincode: " + p.pincode,
       "City: " + p.city,

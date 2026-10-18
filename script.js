@@ -191,7 +191,7 @@ function clearValidationHighlights() {
 function highlightMissingFields() {
   clearValidationHighlights();
   const missing = [];
-  ["customerName", "houseBuilding", "roadArea", "pincode", "city", "state"].forEach(id => {
+  ["customerName", "mobileNumber", "houseBuilding", "roadArea", "pincode", "city", "state"].forEach(id => {
     const field = $("#" + id);
     if (field && !field.value.trim()) {
       field.classList.add("field-invalid");
@@ -201,6 +201,11 @@ function highlightMissingFields() {
   if ($("#pincode").value.trim() && !/^[0-9]{6}$/.test($("#pincode").value.trim())) {
     $("#pincode").classList.add("field-invalid");
     missing.push($("#pincode"));
+  }
+  const mobileField = $("#mobileNumber");
+  if (mobileField && mobileField.value.trim() && !/^[6-9][0-9]{9}$/.test(mobileField.value.trim())) {
+    mobileField.classList.add("field-invalid");
+    missing.push(mobileField);
   }
   const first = missing.find(Boolean);
   if (first) first.scrollIntoView({behavior:"smooth", block:"center"});
@@ -344,13 +349,15 @@ async function sendWhatsAppOrder() {
     return;
   }
   const name = $("#customerName").value.trim();
+  const mobileNumber = $("#mobileNumber").value.trim();
   const houseBuilding = $("#houseBuilding").value.trim();
+  const landmark = $("#landmark").value.trim();
   const roadArea = $("#roadArea").value.trim();
   const pincode = $("#pincode").value.trim();
   const city = $("#city").value.trim();
   const state = $("#state").value.trim();
   const fields = [
-    ["customerName", name], ["houseBuilding", houseBuilding],
+    ["customerName", name], ["mobileNumber", mobileNumber], ["houseBuilding", houseBuilding],
     ["roadArea", roadArea], ["pincode", pincode], ["city", city], ["state", state]
   ];
   const missing = fields.find(([, value]) => !value);
@@ -362,6 +369,11 @@ async function sendWhatsAppOrder() {
   if (!/^[0-9]{6}$/.test(pincode)) {
     $("#pincode").focus();
     showToast("Please enter a valid 6-digit PIN code");
+    return;
+  }
+  if (!/^[6-9][0-9]{9}$/.test(mobileNumber)) {
+    $("#mobileNumber").focus();
+    showToast("Please enter a valid 10-digit mobile number");
     return;
   }
   if (!GOOGLE_SCRIPT_URL.startsWith("https://script.google.com/macros/s/") ||
@@ -382,8 +394,10 @@ async function sendWhatsAppOrder() {
   const payload = new URLSearchParams({
     store: "KAILU CREATION",
     customerName: name,
+    mobileNumber,
     size: orderItems.map(item => `${item.productName}: ${item.size}`).join("; "),
     houseBuilding,
+    landmark,
     roadArea,
     pincode,
     city,
@@ -414,7 +428,7 @@ async function sendWhatsAppOrder() {
     renderCart();
     closeCart();
     Object.keys(cartSizes).forEach(productId => delete cartSizes[productId]);
-    ["customerName", "houseBuilding", "roadArea", "pincode", "city", "state"].forEach(id => {
+    ["customerName", "mobileNumber", "houseBuilding", "landmark", "roadArea", "pincode", "city", "state"].forEach(id => {
       const field = $("#" + id);
       if (field) field.value = "";
     });

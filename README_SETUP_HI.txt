@@ -121,3 +121,10 @@ MOBILE BROWSER BACK BUTTON
 - If the customer presses Android/mobile browser Back while the cart or delivery form is open, the drawer closes and the Shop Catalogs section appears instead of leaving the website.
 - If a fullscreen product photo is open, Back closes the photo first.
 - If the Order Success message is open, Back closes the message and returns to the catalog.
+
+
+MOBILE NUMBER + LANDMARK FIELDS
+- Checkout now asks for a required 10-digit Indian mobile number starting with 6, 7, 8 or 9.
+- Landmark is optional.
+- Both values are sent to Google Apps Script, stored in columns N (Mobile Number) and O (Landmark), and included in the order email.
+- After modifying Code.gs, update Apps Script deployment: Deploy > Manage deployments > Edit > New version > Deploy. Keep using the same /exec URL if updating the existing deployment.
