@@ -13,19 +13,15 @@ ONE-TIME SETUP
    https://docs.google.com/spreadsheets/d/THIS_IS_THE_SHEET_ID/edit
 4. In the Sheet, click Extensions > Apps Script.
 5. Open Code.gs, remove the starter code, and paste the supplied Code.gs file.
-6. In Code.gs change STORE_EMAIL = "YOUR_EMAIL@example.com" to the email address where you want order alerts.
-7. Change SHEET_ID = "PASTE_YOUR_GOOGLE_SHEET_ID_HERE" to the Sheet ID from step 3.
-8. Click Save.
-9. Click Deploy > New deployment > select Web app.
-10. Set "Execute as" to Me and "Who has access" to Anyone.
-11. Click Deploy and authorize the requested permissions. Review the permission prompt carefully.
-12. Copy the Web app URL ending in /exec.
-13. Open the website's script.js in a text editor. Find:
-   const GOOGLE_SCRIPT_URL = "PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE";
-   Replace the placeholder with your full /exec URL, keeping the quotation marks.
-14. Save script.js. Open index.html and place a test order with your own test details.
-15. Check the Google Sheet and email inbox/spam folder. Do not publish until this test works.
-16. If you edit Apps Script later, use Deploy > Manage deployments > Edit and deploy a new version.
+6. In Code.gs, set STORE_EMAIL to the Gmail address where order alerts should arrive. The supplied file currently uses kaklotar.brothers@gmail.com; change it if you want a different inbox.
+7. Change SHEET_ID = "PASTE_YOUR_GOOGLE_SHEET_ID_HERE" to the ID from your actual Google Sheet URL. Do not paste the whole URL, only the ID between /d/ and /edit.
+8. Click Save. In the Apps Script function dropdown, select setupOrdersSheet and click Run once. Authorize it. This prepares the existing tab named "KAILU CREATION Orders" and migrates old rows into the requested A:O column order without intentionally deleting the order history.
+9. Confirm the tab headers are exactly: Timestamp, Order ID, Customer Name, Mobile Number, Items, Size, House No. / Building, Landmark, Road / Area / Colony, Pincode, City, State, Payment Method, Total (INR), Order Status.
+10. Click Deploy > Manage deployments > Edit (pencil) > select New version > Deploy. Make sure it is a Web app, Execute as Me, and Who has access Anyone. Keep the existing /exec URL if editing the same deployment.
+11. In website script.js, verify GOOGLE_SCRIPT_URL is the same deployed Web App URL ending in /exec. Do not replace it with the Apps Script editor URL.
+12. Save all files. Open index.html and place a test order using a real test mobile number and a landmark.
+13. Confirm Mobile Number appears in column D, Landmark in column H, and the same details appear in the Gmail order notification. Check Spam if needed. Do not publish until this test succeeds.
+14. Every time you change Code.gs, deploy a new version; saving the editor alone does not update the live Web App.
 
 FILES
 - index.html: storefront structure
@@ -126,7 +122,7 @@ MOBILE BROWSER BACK BUTTON
 MOBILE NUMBER + LANDMARK FIELDS
 - Checkout now asks for a required 10-digit Indian mobile number starting with 6, 7, 8 or 9.
 - Landmark is optional.
-- Both values are sent to Google Apps Script, stored in columns N (Mobile Number) and O (Landmark), and included in the order email.
+- Both values are sent to Google Apps Script, stored in columns D (Mobile Number) and H (Landmark), and included in the order email.
 - After modifying Code.gs, update Apps Script deployment: Deploy > Manage deployments > Edit > New version > Deploy. Keep using the same /exec URL if updating the existing deployment.
 
 
@@ -163,3 +159,11 @@ PREMIUM HEADER + BANNER UPDATE
 - Added small trust highlights: curated ethnic wear, Cash on Delivery, and easy ordering.
 - Resized and changed the hang-tag card to contain the complete tag image instead of cropping/zooming it. This keeps the KAILU brand artwork neat and reduces overlap.
 - Responsive styles added for mobile, tablets and desktop. All existing catalog, discount pricing, ratings, cart, order form and Apps Script wiring remain in place.
+
+
+GOOGLE SHEET COLUMN FIX (LATEST)
+- The requested layout is A:O: Timestamp, Order ID, Customer Name, Mobile Number, Items, Size, House No. / Building, Landmark, Road / Area / Colony, Pincode, City, State, Payment Method, Total (INR), Order Status.
+- The Apps Script tab name is now "KAILU CREATION Orders" to match the tab shown in the supplied screenshot.
+- setupOrdersSheet() can be run once after setting SHEET_ID. It attempts to migrate existing rows from the previous layout into the requested column order. Make a copy of the spreadsheet before migration as a precaution.
+- Mobile Number is stored as text in column D so leading digits are preserved; Pincode is stored as text in column J.
+- After updating Code.gs, deploy a new Web App version. The browser uses no-cors mode, so the website cannot verify the Apps Script response; always confirm a test order in the Sheet and Gmail.
