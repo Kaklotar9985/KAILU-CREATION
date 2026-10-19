@@ -7,9 +7,9 @@ const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwD97xQD3dIEE
 const CURRENCY = "INR";
 
 const products = [
-  {id:1,name:"Royal Blue Floral Suit",category:"Ethnic Suits",price:299,mrp:1499,rating:4.3,reviews:2500,image:"images/catalog-1-1.png",gallery:["images/catalog-1-2.png","images/catalog-1-3.png","images/catalog-1-4.png"],video:"videos/catalog-1.mp4",tag:"CATALOG 01",description:"Blue floral ethnic suit with a statement dupatta.",color:"#e9dfd0"},
-  {id:2,name:"Mustard Floral Suit",category:"Ethnic Suits",price:299,mrp:1499,rating:4.6,reviews:3076,image:"images/catalog-2-1.jpg",gallery:["images/catalog-2-2.JPEG","images/catalog-2-3.JPEG","images/catalog-2-4.JPEG"],video:"videos/catalog-2.mp4",tag:"CATALOG 02",description:"Mustard floral suit with matching printed dupatta.",color:"#f0e4c9"},
-  {id:3,name:"Sage Green Printed Suit",category:"Ethnic Suits",price:299,mrp:1499,rating:4.5,reviews:3108,image:"images/catalog-3.jpg",gallery:["images/catalog-3-2.JPEG","images/catalog-3-3.JPEG","images/catalog-3-4.JPEG"],video:"videos/catalog-3.mp4",tag:"CATALOG 03",description:"Sage green and floral printed ethnic suit set.",color:"#e4e5d8"}
+  {id:1,name:"Royal Blue Floral Suit",category:"Ethnic Suits",price:299,mrp:1499,rating:4.3,reviews:2500,image:"images/catalog-1-1.JPG",gallery:["images/catalog-1-2.JPG","images/catalog-1-3.JPG","images/catalog-1-4.JPG"],video:"videos/catalog-1.mp4",tag:"SALE",description:"Blue floral ethnic suit with a statement dupatta.",color:"#e9dfd0"},
+  {id:2,name:"Mustard Floral Suit",category:"Ethnic Suits",price:299,mrp:1499,rating:4.6,reviews:3076,image:"images/catalog-2-1.JPG",gallery:["images/catalog-2-2.JPG","images/catalog-2-3.JPG","images/catalog-2-4.JPG"],video:"videos/catalog-2.mp4",tag:"SALE",description:"Mustard floral suit with matching printed dupatta.",color:"#f0e4c9"},
+  {id:3,name:"Sage Green Printed Suit",category:"Ethnic Suits",price:299,mrp:1499,rating:4.5,reviews:3108,image:"images/catalog-3-1.JPG",gallery:["images/catalog-3-2.JPG","images/catalog-3-3.JPG","images/catalog-3-4.JPG"],video:"videos/catalog-3.mp4",tag:"SALE",description:"Sage green and floral printed ethnic suit set.",color:"#e4e5d8"}
 ];
 
 const $ = (selector) => document.querySelector(selector);

@@ -70,9 +70,9 @@ Keep index.html, script.js, style.css, images folder, and videos folder in the s
 
 PHOTO PATH FIX (uploaded catalog photos)
 The supplied ZIP had image names/extensions that did not match the old gallery paths. The updated script.js now uses the exact image names found in your ZIP:
-- Catalog 01: catalog-1-1.png through catalog-1-4.png
-- Catalog 02: catalog-2-1.jpg, catalog-2-2.JPEG, catalog-2-3.JPEG, catalog-2-4.JPEG
-- Catalog 03: catalog-3.jpg, catalog-3-2.JPEG, catalog-3-3.JPEG, catalog-3-4.JPEG
+- Catalog 01: catalog-1-1.JPG through catalog-1-4.JPG
+- Catalog 02: catalog-2-1.JPG, catalog-2-2.JPG, catalog-2-3.JPG, catalog-2-4.JPG
+- Catalog 03: catalog-3-1.JPG, catalog-3-2.JPG, catalog-3-3.JPG, catalog-3-4.JPG
 
 Keep the images folder and filenames unchanged. Note: this uploaded ZIP's Google Apps Script URL is still the placeholder unless you configure it in script.js; keep your deployed /exec URL there to save orders to Sheets and email.
 
@@ -141,3 +141,25 @@ CATALOG RATINGS DISPLAY
 - Catalog 02 Mustard Floral Suit: 4.6 rating, 3,076 count.
 - Catalog 03 Sage Green Printed Suit: 4.5 rating, 3,576 count.
 - Ratings are displayed between the product description and discounted price. Values are the ones supplied for this storefront; verify they reflect genuine customer ratings before publishing.
+
+
+LATEST IMAGE UPDATE
+- Website image references now match the new image filenames supplied in the latest ZIP.
+- Catalog 01: catalog-1-1.JPG through catalog-1-4.JPG.
+- Catalog 02: catalog-2-1.JPG through catalog-2-4.JPG.
+- Catalog 03: catalog-3-1.JPG through catalog-3-4.JPG.
+- The logo/bag/tag references were updated to kailu-logo.JPG, kailu-bag.JPG, and kailu-tags.JPG.
+- Ratings, sale prices, cart, size selectors, Mobile Number, Landmark, Google Sheets/Email order logic and success message have been retained.
+
+
+SALE TAG UPDATE
+- Removed CATALOG 01, CATALOG 02, and CATALOG 03 labels from product photos.
+- Replaced all three labels with a red SALE tag in the same photo-corner position.
+
+
+PREMIUM HEADER + BANNER UPDATE
+- Refined the announcement strip, sticky navigation header, brand logo block, nav links, and cart button styling.
+- Upgraded the hero/banner background, headline hierarchy, call-to-action and premium product-photo collage.
+- Added small trust highlights: curated ethnic wear, Cash on Delivery, and easy ordering.
+- Resized and changed the hang-tag card to contain the complete tag image instead of cropping/zooming it. This keeps the KAILU brand artwork neat and reduces overlap.
+- Responsive styles added for mobile, tablets and desktop. All existing catalog, discount pricing, ratings, cart, order form and Apps Script wiring remain in place.
