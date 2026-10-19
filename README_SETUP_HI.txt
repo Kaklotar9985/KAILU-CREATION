@@ -134,3 +134,10 @@ ORDER SUCCESS MODAL FIX
 - After the order request is sent, the cart is closed without navigating browser history. This prevents the mobile browser's popstate handler from accidentally dismissing "Order Request Submitted!".
 - The success modal stays visible until the customer clicks "Continue Shopping", presses Escape, or uses browser Back.
 - "Continue Shopping" closes the modal and scrolls to the Shop Catalogs section.
+
+
+CATALOG RATINGS DISPLAY
+- Catalog 01 Royal Blue Floral Suit: 4.3 rating, 2,500 count.
+- Catalog 02 Mustard Floral Suit: 4.6 rating, 3,076 count.
+- Catalog 03 Sage Green Printed Suit: 4.5 rating, 3,576 count.
+- Ratings are displayed between the product description and discounted price. Values are the ones supplied for this storefront; verify they reflect genuine customer ratings before publishing.

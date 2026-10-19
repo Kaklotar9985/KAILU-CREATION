@@ -814,3 +814,39 @@ body { background:#fff; color:var(--ink); }
 /* Mobile number and landmark checkout inputs */
 #mobileNumber, #landmark { width:100%; box-sizing:border-box; }
 #mobileNumber:focus, #landmark:focus { outline-color:var(--green); }
+
+
+/* Customer-facing catalog ratings */
+.product-rating {
+  display:flex;
+  align-items:center;
+  gap:5px;
+  min-height:25px;
+  margin-top:6px;
+  margin-bottom:2px;
+  font-size:12px;
+  line-height:1.3;
+  color:var(--ink);
+}
+.product-rating .rating-star {
+  color:#f3a712;
+  font-size:17px;
+  line-height:1;
+}
+.product-rating strong {
+  font-size:12px;
+  font-weight:800;
+  color:var(--ink);
+}
+.product-rating .rating-count {
+  color:var(--muted);
+  font-size:11px;
+  font-weight:500;
+}
+@media(max-width:620px) {
+  .product-rating {
+    min-height:23px;
+    margin-top:5px;
+    gap:4px;
+  }
+}
