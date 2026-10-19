@@ -7,9 +7,9 @@ const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwD97xQD3dIEE
 const CURRENCY = "INR";
 
 const products = [
-  {id:1,name:"Royal Blue Floral Suit",category:"Ethnic Suits",price:299,mrp:1499,rating:4.3,reviews:2500,image:"images/catalog-1-1.JPG",gallery:["images/catalog-1-2.JPG","images/catalog-1-3.JPG","images/catalog-1-4.JPG"],video:"videos/catalog-1.mp4",tag:"SALE",description:"Blue floral ethnic suit with a statement dupatta.",color:"#e9dfd0"},
-  {id:2,name:"Mustard Floral Suit",category:"Ethnic Suits",price:299,mrp:1499,rating:4.6,reviews:3076,image:"images/catalog-2-1.JPG",gallery:["images/catalog-2-2.JPG","images/catalog-2-3.JPG","images/catalog-2-4.JPG"],video:"videos/catalog-2.mp4",tag:"SALE",description:"Mustard floral suit with matching printed dupatta.",color:"#f0e4c9"},
-  {id:3,name:"Sage Green Printed Suit",category:"Ethnic Suits",price:299,mrp:1499,rating:4.5,reviews:3108,image:"images/catalog-3-1.JPG",gallery:["images/catalog-3-2.JPG","images/catalog-3-3.JPG","images/catalog-3-4.JPG"],video:"videos/catalog-3.mp4",tag:"SALE",description:"Sage green and floral printed ethnic suit set.",color:"#e4e5d8"}
+  {id:1,name:"Navy Blue Floral Printed Anarkali Kurta Pant Dupatta Set",category:"3-Piece Kurti Set",price:299,mrp:1499,rating:4.3,reviews:2500,image:"images/catalog-1-1.JPG",gallery:["images/catalog-1-2.JPG","images/catalog-1-3.JPG","images/catalog-1-4.JPG"],video:"videos/catalog-1.mp4",tag:"SALE",description:"Fabric:- Rayon.", color:"#e9dfd0"},
+  {id:2,name:"Mustard Yellow Floral Printed Kurta Pant Dupatta Set",    category:"3-Piece Kurti Set",price:299,mrp:1499,rating:4.6,reviews:3076,image:"images/catalog-2-1.JPG",gallery:["images/catalog-2-2.JPG","images/catalog-2-3.JPG","images/catalog-2-4.JPG"],video:"videos/catalog-2.mp4",tag:"SALE",description:"Fabric:- Cotton Blend.",color:"#f0e4c9"},
+  {id:3,name:"Cream Ethnic Printed Kurta with Bottomwear and Dupatta",  category:"3-Piece Kurti Set",price:299,mrp:1499,rating:4.5,reviews:3108,image:"images/catalog-3-1.JPG",gallery:["images/catalog-3-2.JPG","images/catalog-3-3.JPG","images/catalog-3-4.JPG"],video:"videos/catalog-3.mp4",tag:"SALE",description:"Fabric:- Cotton Blend.",    color:"#e4e5d8"}
 ];
 
 const $ = (selector) => document.querySelector(selector);
