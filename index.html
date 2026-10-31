@@ -1,0 +1,264 @@
+<!doctype html> 
+<html lang="hi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#143d32">
+  <title>KAILU CREATION™ | Your Style, Our Creation</title>
+  <link rel="icon" type="image/png" href="images/kailu-logo-mark-tm.webp">
+  <meta property="og:title" content="KAILU CREATION™ | Your Style, Our Creation">
+  <meta property="og:image" content="images/kailu-logo-transparent-tm.webp">
+  <link rel="stylesheet" href="style.css?v=20261031-cart-drawer-scroll-fix">
+</head>
+<body>
+  <div class="announcement-bar">
+    <span class="announcement-mark">✦</span> YOUR STYLE, OUR CREATION
+    <span class="announcement-divider" aria-hidden="true"></span>
+    <span>PREMIUM PACKAGING · THOUGHTFUL DETAILS</span>
+    <a href="#products">EXPLORE THE EDIT <span aria-hidden="true">↗</span></a>
+  </div>
+  <header class="site-header">
+    <a class="brand" href="#home" aria-label="KAILU CREATION trademark brand home">
+      <span class="brand-mark-wrap"><img class="brand-logo" src="images/kailu-logo-mark-tm.webp" alt="Official KAILU KC trademark emblem"></span>
+      <span class="brand-tagline"><strong>KAILU CREATION<sup class="brand-trademark">™</sup></strong><small>Your Style, Our Creation</small></span>
+    </a>
+    <nav class="main-nav" aria-label="Main navigation">
+      <a class="nav-link active" href="#home">Home</a>
+      <a class="nav-link" href="#products">Shop Catalogs</a>
+      <a class="nav-link" href="#why-kailu">Why KAILU</a>
+    </nav>
+    <button id="wishlistShortcut" class="wishlist-shortcut" type="button" aria-label="Show wishlist" aria-pressed="false" title="Show wishlist">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/></svg>
+      <span id="wishlistCount" class="wishlist-count">0</span>
+    </button>
+    <button id="cartShortcut" class="cart-shortcut" type="button" aria-label="Open cart">
+      <span class="cart-icon" aria-hidden="true">🛍</span> Cart <span id="cartCount" class="count">0</span>
+    </button>
+  </header>
+
+  <main id="home">
+    <section class="hero">
+      <div class="hero-copy">
+        <span class="eyebrow"><span class="eyebrow-line"></span> THE KAILU EXPERIENCE · ETHNIC WEAR</span>
+        <h1>Your Style,<br><em>Our Creation.</em></h1>
+        <p>खूबसूरत एथनिक कलेक्शन, सोच-समझकर तैयार की गई पैकेजिंग और हर ऑर्डर में खास एहसास। अपनी पसंद चुनें और ऑर्डर करें।</p>
+        <div class="hero-actions">
+          <a href="#products" class="primary-link">Discover the Collection <span>↗</span></a>
+          
+        </div>
+        <div class="hero-promise"><span>✦</span> A little tradition. A lot of you.</div>
+        <div class="hero-assurances" aria-label="KAILU CREATION shopping highlights">
+          <span><b aria-hidden="true">✦</b> Curated ethnic wear</span>
+          <span><b aria-hidden="true">✓</b> Cash on Delivery</span>
+          <span><b aria-hidden="true">↗</b> Easy ordering</span>
+        </div>
+      </div>
+      <div class="hero-art" aria-label="Featured KAILU CREATION™ ethnic collection">
+        <div class="hero-photo photo-back">
+          <img src="images/catalog-2-1.webp" alt="Mustard floral ethnic suit" loading="eager">
+          <span class="photo-caption">TIMELESS ELEGANCE</span>
+        </div>
+        <div class="hero-photo photo-main">
+          <img src="images/catalog-1-1.webp" alt="Blue floral ethnic suit" loading="eager">
+          <span class="season-label">THE NEW EDIT <b>✦</b></span>
+        </div>
+        <div class="hero-photo photo-front">
+          <img src="images/catalog-3-1.webp" alt="Sage green ethnic suit" loading="eager">
+          <span class="front-label">Made to feel beautiful</span>
+        </div>
+        <div class="brand-packaging-card" aria-label="KAILU CREATION™ branded luxury shopping bag">
+          <img src="images/kailu-shopping-bag-tm.webp" alt="Official KAILU CREATION™ luxury shopping bag" loading="eager">
+          <span>THE KAILU EXPERIENCE</span>
+        </div>
+        <div class="hero-orbit orbit-one"></div><div class="hero-orbit orbit-two"></div>
+      </div>
+    </section>
+
+    <section class="shop-section" id="products">
+      <div class="section-heading">
+        <div><span class="eyebrow">OUR ETHNIC COLLECTION</span><h2>Shop Catalogs</h2></div>
+        <p id="productSummary">3 beautiful catalogs • ₹399 each</p>
+      </div>
+      <div class="toolbar">
+        <label class="search-box"><span>⌕</span><input id="searchInput" type="search" placeholder="Search products..." aria-label="Search products"></label>
+        <select id="categoryFilter" aria-label="Filter category">
+          <option value="all">All categories</option>
+        </select>
+        <select id="sortSelect" aria-label="Sort products">
+          <option value="featured">Featured</option>
+          <option value="low">Price: Low to high</option>
+          <option value="high">Price: High to low</option>
+          <option value="name">Name: A to Z</option>
+        </select>
+      </div>
+      <div id="productGrid" class="product-grid" aria-live="polite"></div>
+      <div id="emptyProducts" class="empty-state" hidden>
+        <span>⌕</span><h3>No products found</h3><p>Try another search or category.</p>
+      </div>
+    </section>
+
+    <section class="trust-strip" id="why-kailu">
+      <div><span>✓</span><p><strong>Easy Cash on Delivery (COD) Order</strong><small>Order in a few clicks</small></p></div>
+      <div><span>♡</span><p><strong>Direct Contact</strong><small>Chat with us to order</small></p></div>
+      <div><span>↗</span><p><strong>Price you will love</strong><small>Each catalog only ₹399</small></p></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-brand-block">
+      <div class="footer-badge-frame footer-brand-badge-frame">
+        <img class="footer-badge-image" src="images/kailu-creation-available-on-badge.webp" alt="KAILU CREATION — Available on KAILU Creation brand badge" loading="lazy">
+      </div>
+      <div class="footer-brand-details">
+        <strong>KAILU CREATION<sup class="brand-trademark">™</sup></strong>
+        <p>Your Style, Our Creation</p>
+        <p><a class="footer-whatsapp-link" href="https://wa.me/919227115179" target="_blank" rel="noopener noreferrer" aria-label="Contact KAILU CREATION on WhatsApp at +91 92271 15179">WhatsApp: +91 92271 15179</a></p>
+        <p><a class="footer-whatsapp-link" href="mailto:kailucreation.in@gmail.com" target="_blank" rel="noopener noreferrer" aria-label="Contact KAILU CREATION on WhatsApp at +91 92271 15179">Email: kailucreation.in@gmail.com</a></p>
+      </div>
+    </div>
+
+    <div class="footer-social-market">
+      <nav class="footer-social-links" aria-label="KAILU CREATION social media">
+        <a class="footer-social-link" href="https://www.facebook.com/kailucreation.in" target="_blank" rel="noopener noreferrer" aria-label="Visit KAILU CREATION on Facebook">
+          <span class="footer-social-icon facebook-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false"><path d="M13.5 21v-8.2h2.75l.41-3.2H13.5V7.56c0-.93.26-1.56 1.59-1.56h1.69V3.14C16.49 3.05 15.52 3 14.39 3c-2.36 0-3.97 1.44-3.97 4.08V9.6H7.75v3.2h2.67V21h3.08Z"/></svg>
+          </span>
+          <span>Facebook</span>
+        </a>
+        <a class="footer-social-link" href="https://www.instagram.com/kailucreation.in/" target="_blank" rel="noopener noreferrer" aria-label="Visit KAILU CREATION on Instagram">
+          <span class="footer-social-icon instagram-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false"><rect x="3.1" y="3.1" width="17.8" height="17.8" rx="5.1"/><circle cx="12" cy="12" r="4.1"/><circle class="instagram-dot" cx="17.65" cy="6.55" r="1.15"/></svg>
+          </span>
+          <span>Instagram</span>
+        </a>
+        <a class="footer-social-link" href="https://www.linkedin.com/company/kailucreation/" target="_blank" rel="noopener noreferrer" aria-label="Visit KAILU CREATION on LinkedIn">
+          <span class="footer-social-icon linkedin-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false"><path d="M5.2 3.4a2.1 2.1 0 1 1 0 4.2 2.1 2.1 0 0 1 0-4.2ZM3.4 9h3.6v11.6H3.4V9Zm5.8 0h3.45v1.58h.05c.48-.91 1.65-1.87 3.4-1.87 3.64 0 4.31 2.4 4.31 5.52v6.37h-3.6v-5.65c0-1.35-.03-3.08-1.88-3.08-1.88 0-2.17 1.47-2.17 2.98v5.75H9.2V9Z"/></svg>
+          </span>
+          <span>LinkedIn</span>
+        </a>
+        <a class="footer-social-link" href="https://wa.me/919227115179" target="_blank" rel="noopener noreferrer" aria-label="Chat with KAILU CREATION on WhatsApp">
+          <span class="footer-social-icon whatsapp-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false"><path d="M20.52 3.48A11.86 11.86 0 0 0 12.06 0C5.5 0 .16 5.33.16 11.89c0 2.09.55 4.13 1.6 5.93L0 24l6.33-1.66a11.9 11.9 0 0 0 5.73 1.46h.01c6.56 0 11.9-5.33 11.9-11.89 0-3.18-1.24-6.17-3.45-8.43ZM12.07 21.8a9.9 9.9 0 0 1-5.04-1.38l-.36-.21-3.76.99 1-3.66-.24-.38a9.86 9.86 0 0 1-1.52-5.27c0-5.47 4.45-9.91 9.92-9.91 2.65 0 5.14 1.03 7.02 2.91a9.85 9.85 0 0 1 2.9 7.02c0 5.47-4.45 9.91-9.92 9.91Zm5.44-7.42c-.3-.15-1.77-.87-2.05-.97-.28-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.47-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.47.13-.62.14-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51-.17-.01-.37-.01-.57-.01-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.49s1.07 2.89 1.22 3.09c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.23 1.35.2 1.86.12.57-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35Z"/></svg>
+          </span>
+          <span>WhatsApp</span>
+        </a>
+      </nav>
+      <span class="footer-divider" aria-hidden="true"></span>
+      <a class="footer-badge-frame footer-myntra-link" href="https://www.myntra.com/kailu-creation" target="_blank" rel="noopener noreferrer" aria-label="KAILU CREATION listed on Myntra. Open Myntra store in a new tab">
+        <img class="footer-badge-image" src="images/myntra-listed-badge.webp" alt="Listed on Myntra" loading="lazy">
+      </a>
+    </div>
+  </footer>
+
+  <div id="overlay" class="overlay" hidden></div>
+  <aside id="cartDrawer" class="cart-drawer" aria-label="Shopping cart" aria-modal="true" role="dialog" hidden>
+    <div class="cart-head">
+      <div><span class="eyebrow">YOUR SELECTION</span><h2>Your Cart <span id="drawerCount">(0)</span></h2></div>
+      <button id="closeCart" class="icon-button" aria-label="Close cart">×</button>
+    </div>
+    <div id="cartContent" class="cart-content-scroll">
+      <div id="cartItems" class="cart-items"></div>
+      <div id="cartEmpty" class="cart-empty"><span>🛒</span><h3>Your cart is empty</h3><p>Add a few products to get started.</p><button id="continueShoppingEmpty" class="secondary-button" type="button">Continue shopping</button></div>
+      <div id="cartBottom" class="cart-bottom" hidden>
+        <div class="total-row"><span>Subtotal</span><strong id="cartTotal">₹0</strong></div>
+        <p class="cart-note">Delivery charges, availability and final total will be confirmed by the store.</p>
+        <div class="cod-note"><strong>✓ Cash on Delivery (COD)</strong><span>Payment is collected when your order is delivered.</span></div>
+        <button id="proceedCheckout" class="whatsapp-button proceed-checkout" type="button" hidden>Proceed to Order / Checkout</button>
+        <div id="checkoutFields" hidden>
+          <button id="continueToDetails" class="whatsapp-button continue-details" type="button">Continue to Place Order</button>
+          <div id="deliveryFields" hidden>
+            <div class="checkout-heading">Delivery details</div>
+            <label class="field-label" for="customerName">Full name <span class="required-mark">*</span></label>
+            <input id="customerName" class="customer-input" type="text" placeholder="Enter your full name" autocomplete="name" required>
+            <label class="field-label" for="customerEmail">Email Address <span class="optional-mark">(optional)</span></label>
+            <input id="customerEmail" class="customer-input" type="email" placeholder="Enter your email address" autocomplete="email">
+            <label class="field-label" for="mobileNumber">Mobile Number <span class="required-mark">*</span></label>
+            <input id="mobileNumber" class="customer-input" type="tel" inputmode="numeric" pattern="[6-9][0-9]{9}" minlength="10" maxlength="10" placeholder="Enter 10-digit mobile number" autocomplete="tel-national" required>
+            <label class="field-label" for="houseBuilding">House No. / Building Name <span class="required-mark">*</span></label>
+            <input id="houseBuilding" class="customer-input" type="text" placeholder="House number or building name" autocomplete="address-line1" required>
+            <label class="field-label" for="landmark">Landmark</label>
+            <input id="landmark" class="customer-input" type="text" placeholder="Nearby landmark (optional)" autocomplete="off">
+            <label class="field-label" for="roadArea">Road Name / Area / Colony <span class="required-mark">*</span></label>
+            <input id="roadArea" class="customer-input" type="text" placeholder="Road, area or colony" autocomplete="address-line2" required>
+            <label class="field-label" for="pincode">Pincode <span class="required-mark">*</span></label>
+            <input id="pincode" class="customer-input" type="text" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" placeholder="Enter 6-digit PIN code" autocomplete="postal-code" aria-describedby="pincodeFeedback" aria-invalid="false" required>
+            <small id="pincodeFeedback" class="pincode-feedback" data-status="info" aria-live="polite">Enter a 6-digit PIN code to fill City and State automatically.</small>
+            <label class="field-label" for="city">City / District <span class="required-mark">*</span></label>
+            <input id="city" class="customer-input auto-location-field" type="text" placeholder="Auto-filled from PIN code" autocomplete="address-level2" readonly required>
+            <label class="field-label" for="state">State <span class="required-mark">*</span></label>
+            <input id="state" class="customer-input auto-location-field" type="text" placeholder="Auto-filled from PIN code" autocomplete="address-level1" readonly required>
+            <button id="whatsappOrder" class="whatsapp-button"><span>◉</span> Place Order </button>
+            <small class="privacy-note">Your order details will be submitted to the configured order system.</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div id="orderSuccessModal" class="success-modal" hidden role="dialog" aria-modal="true" aria-labelledby="successTitle">
+    <div class="success-card">
+      <div class="success-check" aria-hidden="true">✓</div>
+      <h2 id="successTitle">Order Request Submitted!</h2>
+      <p>Thank you for shopping with <strong>KAILU CREATION<sup class="brand-trademark">™</sup></strong>.</p>
+      <p class="success-subtitle">Your order details have been sent for processing. We will contact you to confirm your order.</p>
+      <button id="continueShoppingSuccess" class="success-continue" type="button">Continue Shopping</button>
+    </div>
+  </div>
+  <div id="catalogDetailsModal" class="catalog-details-modal" hidden role="dialog" aria-modal="true" aria-labelledby="detailProductName">
+    <button class="catalog-details-backdrop" type="button" data-close-catalog-details aria-label="Close catalog details"></button>
+    <section class="catalog-details-panel">
+      <button id="closeCatalogDetails" class="catalog-details-close" type="button" data-close-catalog-details aria-label="Close catalog details">×</button>
+      <div class="catalog-details-layout">
+        <div class="detail-media-column">
+          <div class="detail-media-stage">
+            <img id="detailProductImage" src="" alt="Product photo" tabindex="0" role="button" aria-label="Open product photo full screen; click to zoom">
+            <video id="detailProductVideo" controls muted playsinline preload="metadata" hidden aria-label="Product video"></video>
+            <button id="detailGalleryPrev" class="detail-gallery-nav detail-gallery-prev" type="button" data-detail-gallery-nav="-1" aria-label="Previous product photo">‹</button>
+            <button id="detailGalleryNext" class="detail-gallery-nav detail-gallery-next" type="button" data-detail-gallery-nav="1" aria-label="Next product photo">›</button>
+          </div>
+          <div id="detailGalleryDots" class="detail-gallery-dots" aria-label="Product photo and video options"></div>
+        </div>
+        <div class="detail-info-column">
+          <span id="detailProductCategory" class="product-category">ETHNIC COLLECTION</span>
+          <h2 id="detailProductName">Product name</h2>
+          <div id="detailProductRating" class="detail-product-rating"></div>
+          <div id="detailProductPricing" class="detail-product-pricing"></div>
+          <p id="detailProductStock" class="detail-product-stock">In Stock</p>
+          <div class="detail-field detail-color-field"><span class="detail-field-label">COLOR</span><span id="detailProductColor" class="detail-color-chip">As shown in photos</span></div>
+          <div id="detailColorOptions" class="detail-color-options" role="group" aria-label="Choose color variant"></div>
+          <div class="detail-size-section">
+            <span class="detail-field-label">SELECT SIZE</span>
+            <div id="detailSizeOptions" class="detail-size-options" role="group" aria-label="Select an available clothing size"></div>
+            <p id="detailSizeError" class="detail-size-error" role="alert" hidden>Please select a size before continuing.</p>
+          </div>
+          <p id="detailProductSku" class="detail-product-sku">SKU:</p>
+          <p class="detail-product-fabric"><strong>Fabric:</strong> <span id="detailProductFabric">Rayon</span></p>
+          <p id="detailProductDescription" class="detail-product-description"></p>
+          <div class="detail-quantity-row"><strong>Quantity</strong><div class="detail-quantity-control"><button type="button" data-detail-quantity="-1" aria-label="Decrease quantity">−</button><span id="detailQuantity">1</span><button type="button" data-detail-quantity="1" aria-label="Increase quantity">＋</button></div></div>
+          <div class="detail-product-actions">
+            <button type="button" class="detail-add-button" data-detail-add>＋ Add to Cart</button>
+            <button type="button" class="detail-buy-button" data-detail-buy>Buy Now</button>
+          </div>
+          <p class="detail-cod-note">✓ Cash on Delivery (COD) available. Delivery and final availability will be confirmed when placing the order.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div id="photoLightbox" class="photo-lightbox" hidden role="dialog" aria-modal="true" aria-label="Full screen catalog photo and video">
+    <button id="closePhotoLightbox" class="photo-lightbox-close" type="button" aria-label="Close full screen viewer">×</button>
+    <button id="photoLightboxPrev" class="photo-lightbox-nav photo-lightbox-prev" type="button" aria-label="Previous photo or video">‹</button>
+    <img id="photoLightboxImage" src="" alt="Catalog full screen photo">
+    <video id="photoLightboxVideo" class="photo-lightbox-video" controls muted playsinline preload="none" hidden aria-label="Product video"></video>
+    <button id="photoLightboxNext" class="photo-lightbox-nav photo-lightbox-next" type="button" aria-label="Next photo or video">›</button>
+    <div class="photo-lightbox-zoom-controls" aria-label="Photo zoom controls">
+      <button id="photoLightboxZoomOut" type="button" aria-label="Zoom out" title="Zoom out">−</button>
+      <button id="photoLightboxZoomIn" type="button" aria-label="Zoom in" title="Zoom in">＋</button>
+      <button id="photoLightboxZoomReset" type="button" aria-label="Reset zoom" title="Reset zoom">Reset</button>
+    </div>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="pincode-serviceability.js"></script>
+  <script src="products-data.js?v=20261029-video-icon-fix"></script>
+  <script src="script.js?v=20261031-cart-drawer-scroll-fix"></script>
+</body>
+</html>
