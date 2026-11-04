@@ -2264,6 +2264,8 @@ if (proceedCheckout) {
     checkoutFields.hidden = false;
     checkoutFields.dataset.opened = "true";
     proceedCheckout.hidden = true;
+    // Meta Pixel: Track Initiate Checkout
+    if (typeof window.fbq === "function") {window.fbq("track", "InitiateCheckout");}
     scrollCartContentTo(checkoutFields, { behavior: "smooth", block: "start" });
   });
 }
