@@ -1502,6 +1502,10 @@ function openCatalogDetails(id, options = {}) {
   }
 
   setActiveCatalogProduct(product);
+  // Meta Pixel: Track Product Details View
+  if (typeof window.fbq === "function") {window.fbq("track", "ViewContent", {content_ids: [String(product.id)], content_type: "product"});}
+
+  
   catalogDetailsModal.hidden = false;
   document.body.classList.add("catalog-details-open");
   $("#closeCatalogDetails").focus();
