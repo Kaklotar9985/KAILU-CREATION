@@ -665,6 +665,10 @@ function addToCart(id, selectedSize = "") {
   cart[id] = (cart[id] || 0) + 1;
   cartUnitSizes[id].push(selectedSize || "");
   renderCart();
+  
+  // Meta Pixel: Track Add To Cart
+  if (typeof window.fbq === "function") { window.fbq("track", "AddToCart", {content_ids: [String(product.id)], content_type: "product"});}
+  
   // Add to Cart should only show a brief confirmation; keep the catalog visible.
   showToast(`${product.name} added to your cart.`);
 
