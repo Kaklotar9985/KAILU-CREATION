@@ -686,6 +686,10 @@ function buyNow(id, selectedSize = "", quantity = 1) {
   Object.keys(cartUnitSizes).forEach(key => delete cartUnitSizes[key]);
   cartUnitSizes[id] = Array.from({ length: count }, () => selectedSize || "");
   renderCart();
+ 
+  // Meta Pixel: Track Add To Cart
+  if (typeof window.fbq === "function") {window.fbq("track", "AddToCart", {content_ids: [String(product.id)],content_type: "product"});}
+
   openCart();
   startSizeStep();
   showToast(selectedSize ? "Catalog added. Confirm size and delivery details." : "Select a clothing size first.");
