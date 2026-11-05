@@ -667,8 +667,12 @@ function addToCart(id, selectedSize = "") {
   cartUnitSizes[id].push(selectedSize || "");
   renderCart();
   
-  // Meta Pixel: Track Add To Cart
-  if (typeof window.fbq === "function") { window.fbq("track", "AddToCart", {content_ids: [String(product.id)], content_type: "product"});}
+  // Meta Pixel: send the exact Catalogue product ID for this item.
+  if (typeof window.fbq === "function") {
+    window.fbq("track", "AddToCart", buildMetaCatalogParams([
+      { product, quantity: 1, size: selectedSize }
+    ]));
+  }
   
   // Add to Cart should only show a brief confirmation; keep the catalog visible.
   showToast(`${product.name} added to your cart.`);
@@ -698,6 +702,8 @@ function buyNow(id, selectedSize = "", quantity = 1) {
 }
 
 function startSizeStep() {
+  // Buy Now opens the checkout flow directly, so track it here as well.
+  trackMetaInitiateCheckout();
   const checkoutFields = $("#checkoutFields");
   const deliveryFields = $("#deliveryFields");
   const proceedButton = $("#proceedCheckout");
@@ -1034,6 +1040,50 @@ function waitForSavedOrder(orderId, maxAttempts = 6) {
   })();
 }
 
+// Build Meta commerce parameters from the same Catalogue ID used in the feed.
+// Prefer catalogId; productId/id are fallbacks for existing product records.
+function buildMetaCatalogParams(items, eventValue) {
+  const contents = (Array.isArray(items) ? items : []).map(item => {
+    const product = item && item.product ? item.product : item;
+    const rawId = item?.catalogId ?? product?.catalogId ?? item?.productId ?? product?.id;
+    const id = String(rawId ?? "").trim();
+    const quantity = Math.max(0, Number(item?.quantity ?? 1) || 0);
+    const variant = product && item?.size ? getVariantForSize(product, item.size) : null;
+    const rawPrice = item?.unitPrice ?? item?.item_price ?? variant?.price ?? product?.price;
+    const itemPrice = Number(rawPrice ?? 0);
+    if (!id || quantity <= 0) return null;
+    return {
+      id,
+      quantity,
+      ...(Number.isFinite(itemPrice) ? { item_price: itemPrice } : {})
+    };
+  }).filter(Boolean);
+
+  const contentIds = [...new Set(contents.map(item => item.id))];
+  const itemCount = contents.reduce((sum, item) => sum + item.quantity, 0);
+  const calculatedValue = contents.reduce(
+    (sum, item) => sum + (Number(item.item_price) || 0) * item.quantity,
+    0
+  );
+
+  return {
+    content_ids: contentIds,
+    content_type: "product",
+    contents,
+    value: Number(Number(eventValue ?? calculatedValue).toFixed(2)),
+    currency: CURRENCY,
+    num_items: itemCount
+  };
+}
+
+function trackMetaInitiateCheckout() {
+  if (typeof window.fbq !== "function") return false;
+  const entries = getCartEntries();
+  if (!entries.length) return false;
+  window.fbq("track", "InitiateCheckout", buildMetaCatalogParams(entries));
+  return true;
+}
+
 // Browser Pixel Purchase is sent ONLY after Apps Script confirms the saved row.
 // The Meta eventID is the one official Order ID created for this order.
 function trackMetaPurchase(orderId, total, orderItems) {
@@ -1047,14 +1097,8 @@ function trackMetaPurchase(orderId, total, orderItems) {
     // Tracking can proceed if local storage is unavailable.
   }
 
-  const itemCount = (orderItems || []).reduce(
-    (sum, item) => sum + Number(item.quantity || 0), 0
-  );
-  window.fbq("track", "Purchase", {
-    value: Number(Number(total).toFixed(2)),
-    currency: CURRENCY,
-    num_items: itemCount
-  }, { eventID: confirmedOrderId });
+  const purchaseParams = buildMetaCatalogParams(orderItems, total);
+  window.fbq("track", "Purchase", purchaseParams, { eventID: confirmedOrderId });
 
   try {
     localStorage.setItem(storageKey, "1");
@@ -1139,7 +1183,8 @@ async function sendWhatsAppOrder() {
     const unitPrice = Number(variant?.price ?? product.price ?? 0);
     return {
       productName: product.name,
-      productId: product.id,
+      productId: product.id, // Preserve the existing Apps Script / Sheet field.
+      catalogId: String(product.catalogId || product.id), // Exact Meta Catalogue item ID.
       groupCode: product.groupCode,
       sku: variant?.sku || (product.baseSku && size ? `${product.baseSku}_${size}` : product.baseSku),
       color: product.displayColor,
@@ -1672,8 +1717,12 @@ function openCatalogDetails(id, options = {}) {
   }
 
   setActiveCatalogProduct(product);
-  // Meta Pixel: Track Product Details View
-  if (typeof window.fbq === "function") {window.fbq("track", "ViewContent", {content_ids: [String(product.id)], content_type: "product"});}
+  // Meta Pixel: send the exact Catalogue product ID for this item.
+  if (typeof window.fbq === "function") {
+    window.fbq("track", "ViewContent", buildMetaCatalogParams([
+      { product, quantity: 1 }
+    ]));
+  }
 
   
   catalogDetailsModal.hidden = false;
@@ -2429,8 +2478,8 @@ if (proceedCheckout) {
     checkoutFields.hidden = false;
     checkoutFields.dataset.opened = "true";
     proceedCheckout.hidden = true;
-    // Meta Pixel: Track Initiate Checkout
-    if (typeof window.fbq === "function") {window.fbq("track", "InitiateCheckout");}
+    // Meta Pixel: include all products currently in the cart.
+    trackMetaInitiateCheckout();
     scrollCartContentTo(checkoutFields, { behavior: "smooth", block: "start" });
   });
 }
