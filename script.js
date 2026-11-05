@@ -3,7 +3,8 @@
 // digits only. Example India: "919876543210" (no +, spaces, or hyphens).
 
 const WHATSAPP_NUMBER = "918160621151"; // Optional WhatsApp fallback
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyIyoGbUmWSd3I164G45QWCnyz4FQcQiYgH5LMTnVYMg5DoH9dMh-6EljOoo4WqLmXSPw/exec";
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyjR5_zf_oW4gYTP-lXSxeDHqxn3gzjnlTPciK3FV2MV_zoAMObqAcUAynclU0GCGn8/exec" 
+//"https://script.google.com/macros/s/AKfycbyIyoGbUmWSd3I164G45QWCnyz4FQcQiYgH5LMTnVYMg5DoH9dMh-6EljOoo4WqLmXSPw/exec";
 const CURRENCY = "INR";
 
 // Facebook/Instagram Android WebViews can expose a wider CSS viewport than
@@ -925,6 +926,144 @@ function showToast(message) {
   toastTimer = setTimeout(() => toast.classList.remove("show"), 2100);
 }
 
+// One official Order ID is created in the browser and reused for the Sheet,
+// verification and Meta Pixel Purchase event. Keep it until save is confirmed
+// so a retry of the same submission cannot create a second order.
+const PENDING_ORDER_ID_STORAGE_KEY = "kailuPendingOrderIdV1";
+const KAILU_ORDER_ID_PATTERN = /^KC-\d{8}-\d{6}-[A-F0-9]{6}$/;
+
+function createKailuOrderId() {
+  const now = new Date();
+  const datePart = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, "0")}${String(now.getDate()).padStart(2, "0")}`;
+  const timePart = `${String(now.getHours()).padStart(2, "0")}${String(now.getMinutes()).padStart(2, "0")}${String(now.getSeconds()).padStart(2, "0")}`;
+  let randomPart;
+
+  if (window.crypto && typeof window.crypto.getRandomValues === "function") {
+    const bytes = new Uint8Array(3);
+    window.crypto.getRandomValues(bytes);
+    randomPart = Array.from(bytes, byte => byte.toString(16).padStart(2, "0")).join("").toUpperCase();
+  } else {
+    randomPart = Math.floor(Math.random() * 0x1000000).toString(16).padStart(6, "0").toUpperCase();
+  }
+
+  return `KC-${datePart}-${timePart}-${randomPart}`;
+}
+
+function getOrCreatePendingOrderId() {
+  try {
+    const saved = sessionStorage.getItem(PENDING_ORDER_ID_STORAGE_KEY);
+    if (saved && KAILU_ORDER_ID_PATTERN.test(saved)) return saved;
+  } catch (error) {
+    // Continue with an in-memory Order ID when session storage is unavailable.
+  }
+
+  const orderId = createKailuOrderId();
+  try {
+    sessionStorage.setItem(PENDING_ORDER_ID_STORAGE_KEY, orderId);
+  } catch (error) {
+    // The request can still be submitted; persistence is best-effort.
+  }
+  return orderId;
+}
+
+function clearPendingOrderId(orderId) {
+  try {
+    if (sessionStorage.getItem(PENDING_ORDER_ID_STORAGE_KEY) === orderId) {
+      sessionStorage.removeItem(PENDING_ORDER_ID_STORAGE_KEY);
+    }
+  } catch (error) {
+    // Ignore storage failures; this key is only a retry safeguard.
+  }
+}
+
+function verifyOrderSaved(orderId) {
+  return new Promise((resolve, reject) => {
+    const callbackName = `kailuOrderVerify_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
+    const script = document.createElement("script");
+    let finished = false;
+    const cleanup = () => {
+      if (script.parentNode) script.parentNode.removeChild(script);
+      try { delete window[callbackName]; } catch (_) { window[callbackName] = undefined; }
+    };
+    const finish = (handler, value) => {
+      if (finished) return;
+      finished = true;
+      clearTimeout(timeoutId);
+      cleanup();
+      handler(value);
+    };
+    const timeoutId = setTimeout(() => {
+      finish(reject, new Error("Order verification timed out."));
+    }, 10000);
+
+    window[callbackName] = result => finish(resolve, result);
+    script.onerror = () => finish(reject, new Error("Could not contact the order verification service."));
+    const query = new URLSearchParams({
+      action: "verify",
+      orderId,
+      callback: callbackName,
+      _: String(Date.now())
+    });
+    script.src = `${GOOGLE_SCRIPT_URL}?${query.toString()}`;
+    document.head.appendChild(script);
+  });
+}
+
+function waitForSavedOrder(orderId, maxAttempts = 6) {
+  return (async () => {
+    let lastError = null;
+    for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
+      try {
+        const result = await verifyOrderSaved(orderId);
+        if (result && result.ok === true && result.orderId) return result;
+        if (result && result.pending !== true) return result;
+      } catch (error) {
+        lastError = error;
+      }
+      if (attempt < maxAttempts - 1) {
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
+    }
+    return {
+      ok: false,
+      pending: true,
+      message: lastError
+        ? "Order save could not be verified yet. Please do not submit a new order; retry this same order shortly."
+        : "Order save is still being confirmed. Please try again shortly."
+    };
+  })();
+}
+
+// Browser Pixel Purchase is sent ONLY after Apps Script confirms the saved row.
+// The Meta eventID is the one official Order ID created for this order.
+function trackMetaPurchase(orderId, total, orderItems) {
+  const confirmedOrderId = String(orderId || "").trim();
+  if (!confirmedOrderId || typeof window.fbq !== "function") return false;
+
+  const storageKey = `kailuMetaPurchaseSent_${confirmedOrderId}`;
+  try {
+    if (localStorage.getItem(storageKey) === "1") return false;
+  } catch (error) {
+    // Tracking can proceed if local storage is unavailable.
+  }
+
+  const itemCount = (orderItems || []).reduce(
+    (sum, item) => sum + Number(item.quantity || 0), 0
+  );
+  window.fbq("track", "Purchase", {
+    value: Number(Number(total).toFixed(2)),
+    currency: CURRENCY,
+    num_items: itemCount
+  }, { eventID: confirmedOrderId });
+
+  try {
+    localStorage.setItem(storageKey, "1");
+  } catch (error) {
+    // The Meta Pixel call has already been queued; ignore storage restrictions.
+  }
+  return true;
+}
+
 async function sendWhatsAppOrder() {
   const deliveryFields = $("#deliveryFields");
   if (deliveryFields) deliveryFields.hidden = false;
@@ -1011,6 +1150,7 @@ async function sendWhatsAppOrder() {
     };
   });
   const total = orderItems.reduce((sum, item) => sum + item.lineTotal, 0);
+  const orderId = getOrCreatePendingOrderId();
   const payload = new URLSearchParams({
     store: "KAILU CREATION™",
     customerName: name,
@@ -1027,6 +1167,7 @@ async function sendWhatsAppOrder() {
     paymentMethod: "Cash on Delivery (COD)",
     currency: "INR",
     total: String(total),
+    orderId,
     items: JSON.stringify(orderItems)
   });
 
@@ -1035,16 +1176,40 @@ async function sendWhatsAppOrder() {
   submitButton.disabled = true;
   submitButton.textContent = "Submitting order…";
   try {
-    // Apps Script is cross-origin; no-cors allows a simple form POST.
-    // The browser cannot read the response, so verify a test order in Sheets/email.
+    // Apps Script accepts the cross-origin form POST. Its response is opaque,
+    // so use the existing JSONP verification endpoint to obtain the real Order ID.
     await fetch(GOOGLE_SCRIPT_URL, {
       method: "POST",
       mode: "no-cors",
       body: payload
     });
+
+    const verification = await waitForSavedOrder(orderId);
+    if (!verification || verification.ok !== true || !verification.orderId) {
+      if (verification && verification.pending !== true) {
+        clearPendingOrderId(orderId);
+      }
+      showToast(verification && verification.message
+        ? verification.message
+        : "Order save is not confirmed yet. Please try again shortly.");
+      submitButton.innerHTML = originalText;
+      submitButton.disabled = false;
+      return;
+    }
+
+    const savedOrderId = String(verification.orderId).trim();
+    if (savedOrderId !== orderId) {
+      showToast("Order ID verification mismatch. Please contact the store before retrying.");
+      submitButton.innerHTML = originalText;
+      submitButton.disabled = false;
+      return;
+    }
+    // The same single ID is saved in the Sheet and sent to Meta as eventID.
+    trackMetaPurchase(orderId, total, orderItems);
+    clearPendingOrderId(orderId);
     submitButton.textContent = "Order Request Sent";
 
-    // Return the customer to the catalog and close the cart after submission.
+    // Return the customer to the catalog and close the cart only after save confirmation.
     cart = {};
     Object.keys(cartUnitSizes).forEach(id => delete cartUnitSizes[id]);
     renderCart();
